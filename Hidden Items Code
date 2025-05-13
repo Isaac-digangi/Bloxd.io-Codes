@@ -1,23 +1,28 @@
 /*
 Use in a command block in Bloxd.io worlds lobbies to be able to access hidden items
 More to be added soon
-Made by Nexo, Made better by S0MPENDER
+Made by Nexo, Made better by S0MPENDER & M1DNIGHT_SV
+
+**WITHER ROSE WAS REMOVED HAS BEEN REPLACED BY SHADOW ROSE WHICH IS NO LONGER HIDDEN**
+
 */
 
 stackableItems=["Toxin Ball","Timed Spike Bomb Block","Water","Lava",
-"Melting Ice","Ice Bridge","Loot Chest","Bouncy Bomb Block","Green Stone","Green Bricks","Dark Green Bricks","Dim Lamp On","Dim Lamp Off","Wither Rose","Lily of the Valley","Azure Bluet","Sponge","Mushroom Stem","Block of Quartz","Chiseled Block of Quartz","Lapis Lazuli Ore","Block of Lapis Lazuli","Block of Emerald","Emerald Ore","Invisible Solid","Fireball Block","Iceball Block","Grenade","Rocket","Super Rocket","Iron Watermelon","ReservedBread BlockRotation2","Toxin Ball Block"
+"Melting Ice","Ice Bridge","Loot Chest","Bouncy Bomb Block","Green Stone","Green Bricks","Dark Green Bricks","Dim Lamp On","Dim Lamp Off",
+"Lily of the Valley","Azure Bluet","Sponge","Mushroom Stem","Block of Quartz","Chiseled Block of Quartz","Lapis Lazuli Ore","Block of Lapis Lazuli",
+"Block of Emerald","Emerald Ore","Invisible Solid","Fireball Block","Iceball Block","Grenade","Rocket","Super Rocket","Iron Watermelon",
+"ReservedBread BlockRotation2","Toxin Ball Block","Mystery Block","Hay Bale","temp"
 
 ]
 
 unstackableItems=["Cornbread","Obby RPG","Timed Spike Bomb","Artisan Shears",
 "Artisan Axe","INTERNAL_MESH_Wood Hang Glider","INTERNAL_MESH_Iron Hang Glider",
 "INTERNAL_MESH_Gold Hang Glider","INTERNAL_MESH_Diamond Hang Glider",
-"INTERNAL_MESH_Boat","INTERNAL_MESH_Obsidian Boat","INTERNAL_MESH_Kart"]
+"INTERNAL_MESH_Boat","INTERNAL_MESH_Obsidian Boat","INTERNAL_MESH_Kart","INTERNAL_MESH_Blue Balloon"]
 
 
 for(x=0;x<stackableItems.length;x++)
-{api.editItemCraftingRecipes(myId,
-stackableItems[x], 
+{api.editItemCraftingRecipes(myId,stackableItems[x], 
 [{requires:[{items:["Stone"],amt: 1}], 
   produces: 999, 
   station:"Potion Table"}])}
@@ -33,7 +38,7 @@ unstackableItems[x],
 
 
 
-api.log("made by Nexo made better by S0MPENDER (dc @sompender)")
+api.log("made by Nexo improved by S0MPENDER and M1DNIGHT_SV")
 const colors = [
     "Red", "Lime", "Pink", "Gray", "Cyan", "Blue", "White", "Brown",
     "Green", "Black", "Orange", "Yellow", "Purple", "Magenta",
@@ -43,7 +48,8 @@ const colors = [
 const categories = [
     "Balloon", "Popup Tower", "Paintball Gun", "Heavy Paintball Gun",
     "Paint Bow", "Paintball Explosive Item", "Quick Paintball Explosive Item",
-    "Sticky Paintball Explosive Item", "Seeking Paintball Explosive Item"
+    "Sticky Paintball Explosive Item", "Seeking Paintball Explosive Item",
+	"Strongbed"
 ];
 
 const categorySingleCraft = [
