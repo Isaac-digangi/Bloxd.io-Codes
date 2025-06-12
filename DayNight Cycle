@@ -1,3 +1,7 @@
+/*
+* Made by Bloxd Builder and M1DNIGHT_SV
+*/
+
 function getTimeColor(index) {
 index=index%10000
 let segmentSize = 10000 / 11;
