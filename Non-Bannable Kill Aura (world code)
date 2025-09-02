@@ -1,3 +1,5 @@
+api.log("Transcribed by: M1DNIGHT_SV");
+
 const dealMeleeDamage = (hittingId) => {
   const playerPosition = api.getPosition(hittingId);
   const playerIds = api.getPlayerIds();
