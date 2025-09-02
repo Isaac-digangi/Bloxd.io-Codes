@@ -1,0 +1,30 @@
+// Available skins: IronMelon, Wizard, FireWizard, Zombie, TraderOne, TraderTwo, TraderThree.
+
+//**Only paste one and not the whole code lol**
+api.changePlayerIntoSkin(myId, "body", "IronMelon")
+api.changePlayerIntoSkin(myId, "legs", "IronMelon")
+api.changePlayerIntoSkin(myId, "head", "IronMelon")
+
+api.changePlayerIntoSkin(myId, "body", "Wizard")
+api.changePlayerIntoSkin(myId, "legs", "Wizard")
+api.changePlayerIntoSkin(myId, "head", "Wizard")
+
+api.changePlayerIntoSkin(myId, "body", "FireWizard")
+api.changePlayerIntoSkin(myId, "legs", "FireWizard")
+api.changePlayerIntoSkin(myId, "head", "FireWizard")
+
+api.changePlayerIntoSkin(myId, "body", "Zombie")
+api.changePlayerIntoSkin(myId, "legs", "Zombie")
+api.changePlayerIntoSkin(myId, "head", "Zombie")
+
+api.changePlayerIntoSkin(myId, "body", "TraderOne")
+api.changePlayerIntoSkin(myId, "legs", "TraderOne")
+api.changePlayerIntoSkin(myId, "head", "TraderOne")
+
+api.changePlayerIntoSkin(myId, "body", "TraderTwo")
+api.changePlayerIntoSkin(myId, "legs", "TraderTwo")
+api.changePlayerIntoSkin(myId, "head", "TraderTwo")
+
+api.changePlayerIntoSkin(myId, "body", "TraderThree")
+api.changePlayerIntoSkin(myId, "legs", "TraderThree")
+api.changePlayerIntoSkin(myId, "head", "TraderThree")
