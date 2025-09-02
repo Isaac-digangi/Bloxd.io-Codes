@@ -22,46 +22,31 @@ function onPlayerPickedUpItem(playerId, itemName, itemAmount){
 }
 
 /* 
-still testing:
+**extra code for testing**
 
-// Store achievements per player
-const playerAchievements = {};
+const playerMinedAchievements = {};
 
-function onPlayerCraft(playerId, itemName, craftingIdx) {
-  // Initialize player achievement record if not present
-  if (!playerAchievements[playerId]) {
-    playerAchievements[playerId] = {};
+function onPlayerMine(playerId, blockName) {
+  // Initialize player record if not present
+  if (!playerMinedAchievements[playerId]) {
+    playerMinedAchievements[playerId] = {};
   }
 
-  // Iron Pickaxe Achievement
-  if (itemName === "Iron Pickaxe" && !playerAchievements[playerId]["IronPickaxe"]) {
-    api.sendTopRightHelper(playerId, "crown", "Advancement Made! Isn't it iron pick?", {
+  // Diamond Mining Achievement
+  if (blockName === "Diamond Ore" && !playerMinedAchievements[playerId]["MinedDiamond"]) {
+    api.sendTopRightHelper(playerId, "crown", "Advancement Made! Diamonds!", {
       duration: 5,
       height: 85,
       width: 300,
-      color: "#32c433",
+      color: "#00c0ff",
       iconSizeMult: 1,
       textAndIconColor: "#FFFFFF",
       fontSize: "18px"
     });
-    playerAchievements[playerId]["IronPickaxe"] = true;
-  }
-
-  // Hang Glider Achievement
-  const hangGliders = ["Wood Hang Glider", "Iron Hang Glider", "Gold Hang Glider", "Diamond Hang Glider"];
-  if (hangGliders.includes(itemName) && !playerAchievements[playerId]["HangGlider"]) {
-    api.sendTopRightHelper(playerId, "crown", "Advancement Made! Sky's The Limit", {
-      duration: 5,
-      height: 85,
-      width: 300,
-      color: "#e024e8",
-      iconSizeMult: 1,
-      textAndIconColor: "#FFFFFF",
-      fontSize: "18px"
-    });
-    playerAchievements[playerId]["HangGlider"] = true;
+    playerMinedAchievements[playerId]["MinedDiamond"] = true;
   }
 }
+
 
 
 */
