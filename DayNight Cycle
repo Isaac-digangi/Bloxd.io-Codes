@@ -1,5 +1,8 @@
 /*
 * Made by Bloxd Builder and M1DNIGHT_SV
+*
+* this code no longer works bc of update
+*
 */
 
 function getTimeColor(index) {
