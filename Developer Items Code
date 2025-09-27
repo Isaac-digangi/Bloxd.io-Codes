@@ -49,7 +49,7 @@ const categories = [
     "Balloon", "Popup Tower", "Paintball Gun", "Heavy Paintball Gun",
     "Paint Bow", "Paintball Explosive Item", "Quick Paintball Explosive Item",
     "Sticky Paintball Explosive Item", "Seeking Paintball Explosive Item",
-	"Strongbed"
+	"Strongbed", "Portal"
 ];
 
 const categorySingleCraft = [
