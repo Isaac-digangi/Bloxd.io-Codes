@@ -20,9 +20,6 @@ unstackableItems=["Cornbread","Obby RPG","Timed Spike Bomb","Artisan Shears",
 "INTERNAL_MESH_Gold Hang Glider","INTERNAL_MESH_Diamond Hang Glider",
 "INTERNAL_MESH_Boat","INTERNAL_MESH_Obsidian Boat","INTERNAL_MESH_Kart","INTERNAL_MESH_Blue Balloon"]
 
-
-ERROR: DOMAIN | Value entered is not allowed in the function or command
-
 for(x=0;x<unstackableItems.length;x++)
 {api.editItemCraftingRecipes(myId,
 unstackableItems[x], 
