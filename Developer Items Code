@@ -3,7 +3,7 @@ Use in a command block in Bloxd.io worlds lobbies to be able to access developer
 More to be added soon
 Made by Nexo, Made better by S0MPENDER & M1DNIGHT_SV
 
-**WITHER ROSE WAS REMOVED HAS BEEN REPLACED BY SHADOW ROSE WHICH IS NO LONGER AN ILLEGAL ITEM**
+*Strongbed and Whither Rose and no longer illegal items*
 
 */
 
@@ -21,11 +21,7 @@ unstackableItems=["Cornbread","Obby RPG","Timed Spike Bomb","Artisan Shears",
 "INTERNAL_MESH_Boat","INTERNAL_MESH_Obsidian Boat","INTERNAL_MESH_Kart","INTERNAL_MESH_Blue Balloon"]
 
 
-for(x=0;x<stackableItems.length;x++)
-{api.editItemCraftingRecipes(myId,stackableItems[x], 
-[{requires:[{items:["Stone"],amt: 1}], 
-  produces: 999, 
-  station:"Potion Table"}])}
+ERROR: DOMAIN | Value entered is not allowed in the function or command
 
 for(x=0;x<unstackableItems.length;x++)
 {api.editItemCraftingRecipes(myId,
@@ -49,7 +45,6 @@ const categories = [
     "Balloon", "Popup Tower", "Paintball Gun", "Heavy Paintball Gun",
     "Paint Bow", "Paintball Explosive Item", "Quick Paintball Explosive Item",
     "Sticky Paintball Explosive Item", "Seeking Paintball Explosive Item",
-	"Strongbed", "Portal"
 ];
 
 const categorySingleCraft = [
@@ -59,10 +54,20 @@ const categorySingleCraft = [
 const craftableItems = [];
 colors.forEach(color => {
     categories.forEach(category => {
-        craftableItems.push({ name: `${color} ${category}`, 
+		//craftableItems.push({name: `${color} ${Portal}`,                        *i'm still testing this line*
+        craftableItems.push({ name: `${color} ${category}
             produces: categorySingleCraft.includes(category) ? 1 : 999 });
     });
 });
+
+/*
+for(x=0;x<stackableItems.length;x++)
+{api.editItemCraftingRecipes(myId,
+(colors) Portal, 
+[{requires:[{items:["Stone"],amt: 1}], 
+  produces: 999, 
+  station:"Potion Table"}])}
+*/
 
 craftableItems.forEach(item => {
     api.editItemCraftingRecipes(myId, item.name, [{
