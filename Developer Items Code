@@ -11,7 +11,9 @@ stackableItems=["Toxin Ball","Timed Spike Bomb Block","Water","Lava",
 "Melting Ice","Ice Bridge","Loot Chest","Bouncy Bomb Block","Green Stone","Green Bricks","Dark Green Bricks","Dim Lamp On","Dim Lamp Off",
 "Lily of the Valley","Azure Bluet","Sponge","Mushroom Stem","Block of Quartz","Chiseled Block of Quartz","Lapis Lazuli Ore","Block of Lapis Lazuli",
 "Block of Emerald","Emerald Ore","Invisible Solid","Fireball Block","Iceball Block","Grenade","Rocket","Super Rocket","Iron Watermelon",
-"ReservedBread BlockRotation2","Toxin Ball Block","Mystery Block","Hay Bale","temp","Crate","ReservedBread BlockRotation1","ReservedBread BlockRotation3"
+"ReservedBread BlockRotation2","Toxin Ball Block","Mystery Block","Hay Bale","temp","Crate","ReservedBread BlockRotation1","ReservedBread BlockRotation3",
+"Reserved FurnaceRotation1","Reserved FurnaceRotation2","Reserved FurnaceRotation3","Reserved Moonstone ChestRot1",'Reserved Moonstone ChestRot2",
+"Reserved Moonstone ChestRot3","ReservedWorkbenchRotation1","ReservedWorkbenchRotation2","ReservedWorkbenchRotation3"
 
 ]
 
@@ -26,9 +28,6 @@ unstackableItems[x],
 [{requires:[{items:["Stone"],amt: 1}], 
   produces: 1, 
   station:"Potion Table"}])}
-
-
-
 
 
 api.log("made by Nexo improved by S0MPENDER and M1DNIGHT_SV")
@@ -51,20 +50,10 @@ const categorySingleCraft = [
 const craftableItems = [];
 colors.forEach(color => {
     categories.forEach(category => {
-		//craftableItems.push({name: `${color} ${Portal}`,                        *i'm still testing this line*
         craftableItems.push({ name: `${color} ${category}
             produces: categorySingleCraft.includes(category) ? 1 : 999 });
     });
 });
-
-/*
-for(x=0;x<stackableItems.length;x++)
-{api.editItemCraftingRecipes(myId,
-(colors) Portal, 
-[{requires:[{items:["Stone"],amt: 1}], 
-  produces: 999, 
-  station:"Potion Table"}])}
-*/
 
 craftableItems.forEach(item => {
     api.editItemCraftingRecipes(myId, item.name, [{
