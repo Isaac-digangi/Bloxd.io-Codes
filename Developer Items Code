@@ -13,7 +13,9 @@ stackableItems=["Toxin Ball","Timed Spike Bomb Block","Water","Lava",
 "Block of Emerald","Emerald Ore","Invisible Solid","Fireball Block","Iceball Block","Grenade","Rocket","Super Rocket","Iron Watermelon",
 "ReservedBread BlockRotation2","Toxin Ball Block","Mystery Block","Hay Bale","temp","Crate","ReservedBread BlockRotation1","ReservedBread BlockRotation3",
 "Reserved FurnaceRotation1","Reserved FurnaceRotation2","Reserved FurnaceRotation3","Reserved Moonstone ChestRot1","Reserved Moonstone ChestRot2",
-"Reserved Moonstone ChestRot3","ReservedWorkbenchRotation1","ReservedWorkbenchRotation2","ReservedWorkbenchRotation3"
+"Reserved Moonstone ChestRot3","ReservedWorkbenchRotation1","ReservedWorkbenchRotation2","ReservedWorkbenchRotation3","Obby Absorb Block","Obby Absorb Death Block",
+"Obby Death Block", "Generator Spawn Block (Ore)","Generator Spawn Block (Diamond)","Generator Spawn Block (Moonstone)","Generator Spawn Block (Gray)",
+"Finish Block"
 
 ]
 
