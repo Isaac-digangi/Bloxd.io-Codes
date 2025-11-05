@@ -40,3 +40,19 @@ if (withItem === "FallDamage") {
   api.broadcastMessage(killedName + " was slain by " + attackerName + " with " + withItem, {color: "Red"});
 }
 }
+
+
+/* TEST CODE
+function onPlayerKilledOtherPlayer(attackingPlayer, killedPlayer, damageDealt, withItem) {
+	const attackerName = api.getEntityName(attackingPlayer);
+	const killedName = api.getEntityName(killedPlayer);
+
+if (withItem === "FallDamage") {
+	api.setClientOptions(killedPlayer, {cameraTint: [1, 0, 0, 0.3]});
+	api.sendFlyingMiddleMessage(killedPlayer, [killedName + " fell from a high place"], 100);
+}
+}
+function onRespawnRequest(killedPlayer){
+	api.setClientOptions(killedPlayer, {cameraTint: [0, 0, 0, 0]});
+} 
+*/
