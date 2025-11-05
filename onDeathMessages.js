@@ -1,11 +1,11 @@
 function onPlayerKilledOtherPlayer(attackingPlayer, killedPlayer, damageDealt, withItem) {
-  const attackerName = api.getEntityName(attackingPlayer);
-  const killedName = api.getEntityName(killedPlayer);
+	const attackerName = api.getEntityName(attackingPlayer);
+	const killedName = api.getEntityName(killedPlayer);
 
 if (withItem === "FallDamage") {
-  api.broadcastMessage(killedName + " fell from a high place", {color: "Red"});
+  	api.broadcastMessage(killedName + " fell from a high place", {color: "Red"});
 } else if (withItem === "Lava") {
-  api.broadcastMessage(killedName + " tried to swim in lava", {color: "Red"});
+  	api.broadcastMessage(killedName + " tried to swim in lava", {color: "Red"});
 } else if (withItem === "Stomp Damage Enchantment"){
 	api.broadcastMessage(killedName + " was crushed by " + attackerName + " with " + "Spiked Boots", {color:"Red"});
 }else if (withItem === "Firecracker"){
