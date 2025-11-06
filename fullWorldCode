@@ -1,0 +1,96 @@
+function onPlayerJoin(myId) {
+const playerName = api.getEntityName(myId);
+
+api.sendTopRightHelper(myId, "crown", "Welcome " + playerName, {duration:5, height:85, width:300, color:"#00008b", iconSizeMult:2, textAndIconColor:"#FFFFFF", fontSize:"18px"})
+
+api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
+    content: [{str:api.getEntityName(myId),style:{color:"white"}}],
+    subtitle: [{str:"Player",style:{color:"white"}}],
+ backgroundColor: "black",
+}, true)
+
+if(playerName === "M1DNIGHT_SV") {
+api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
+    content: [{str:api.getEntityName(myId),style:{color:"#5c00a4"}}],
+    subtitle: [{str:"Lobby Owner / Lobby Dev",style:{color:"cyan"}}],
+ backgroundColor: "black",
+}, true)
+}
+
+if(playerName === "_F0RTE__") {
+api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
+    content: [{str:api.getEntityName(myId),style:{color:"#5c00a4"}}],
+    subtitle: [{str:"Lobby Owner / Lobby Dev",style:{color:"cyan"}}],
+ backgroundColor: "black",
+}, true)
+}
+
+if(playerName === "BrainLess_") {
+api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
+    content: [{str:api.getEntityName(myId),style:{color:"Blue"}}],
+    subtitle: [{str:"Lobby Co-Owner",style:{color:"cyan"}}],
+ backgroundColor: "black",
+}, true)
+}
+if(playerName === "Shadow_lost_it2frfr") {
+api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
+    content: [{str:api.getEntityName(myId),style:{color:"Blue"}}],
+    subtitle: [{str:"👑 King :D ",style:{color:"Orange"}}],
+ backgroundColor: "black",
+}, true)
+}
+}
+
+function onPlayerKilledOtherPlayer(attackingPlayer, killedPlayer, damageDealt, withItem) {
+	const attackerName = api.getEntityName(attackingPlayer);
+	const killedName = api.getEntityName(killedPlayer);
+
+	if (withItem === "FallDamage") {
+		api.setClientOptions(killedPlayer, {cameraTint: [1, 0, 0, 0.3]});
+		api.sendFlyingMiddleMessage(killedPlayer, [killedName + " fell from a high place"], 100);
+	}
+}
+/*
+function onRespawnRequest(killedPlayer) {
+	const respawnLoc = [-3.50, 91.00, -2.50]; // Example location
+
+	api.broadcastMessage("Respawn triggered for " + api.getEntityName(killedPlayer));
+	api.setClientOptions(killedPlayer, {cameraTint: [0, 0, 0, 0]});
+
+	return respawnLoc;
+}
+
+
+const bedSpawns = {};
+
+onPlayerAltAction = (playerId, x, y, z, block, targetEId) => {
+	// Check if the player right-clicked a bed
+	if (block.includes("Bed")) {
+		// Store the spawn point slightly above the bed
+		spawnPoint(playerId) = [x, y + 1, z];
+		api.broadcastMessage(api.getEntityName(playerId) + " set spawn at bed: " + x + ", " + (y + 1) + ", " + z);
+	}
+};
+*/
+
+const bedSpawns = {};
+
+onPlayerAltAction = (playerId, x, y, z, block, targetEId) => {
+	// Detect bed interaction
+	if (block && block.includes("Bed")) {
+		spawnPoint[playerId] = [x, y + 1, z]; // Spawn slightly above bed
+		api.broadcastMessage(api.getEntityName(playerId) + " set spawn at bed: " + x + ", " + (y + 1) + ", " + z);
+	}
+};
+
+onRespawnRequest = (playerId) => {
+
+	if (spawnPoint[playerId]) {
+		return spawnPoint[playerId];
+		api.broadcastMessage("Resetting tint for " + api.getEntityName(playerId));
+		api.setClientOptions(playerId, {cameraTint: [0, 0, 0, 0]});
+	}else{
+		return [-3.50, 91.00, -2.50];
+	}
+};
+
