@@ -42,17 +42,35 @@ if (withItem === "FallDamage") {
 }
 
 
-/* TEST CODE
+/* code for screen tint on death (unfinished) (needs auto respawn)
+const lobbySpawn = [-3.5, 91.0, -2.5];
+const tintTimers = {}; // playerId → tick count
+
 function onPlayerKilledOtherPlayer(attackingPlayer, killedPlayer, damageDealt, withItem) {
-	const attackerName = api.getEntityName(attackingPlayer);
 	const killedName = api.getEntityName(killedPlayer);
 
-if (withItem === "FallDamage") {
-	api.setClientOptions(killedPlayer, {cameraTint: [1, 0, 0, 0.3]});
-	api.sendFlyingMiddleMessage(killedPlayer, [killedName + " fell from a high place"], 100);
+	if (withItem === "FallDamage") {
+		api.setClientOptions(killedPlayer, {cameraTint: [1, 0, 0, 0.3]});
+		api.sendFlyingMiddleMessage(killedPlayer, [{str: killedName + " fell from a high place",style:{color:"red"}}], 100);
+		tintTimers[killedPlayer] = 0; // Start tracking ticks
+	}
 }
+
+function onRespawnRequest(playerId) {
+	api.setClientOptions(playerId, {cameraTint: [0, 0, 0, 0]});
+	delete tintTimers[playerId]; // Stop tracking once they respawn
+	return lobbySpawn;
 }
-function onRespawnRequest(killedPlayer){
-	api.setClientOptions(killedPlayer, {cameraTint: [0, 0, 0, 0]});
-} 
+function tick() {
+	for (const playerId in tintTimers) {
+		tintTimers[playerId]++;
+
+		if (tintTimers[playerId] === 100) {
+			api.setClientOptions(playerId, {cameraTint: [0, 0, 0, 0]});
+			api.sendFlyingMiddleMessage(playerId, [{str:"Clearing screen tint (respawned at a bed)",style:{color:"Red"}}], 10000);
+			delete tintTimers[playerId];
+		}
+	}
+}
+
 */
