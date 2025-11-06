@@ -42,17 +42,20 @@ if (withItem === "FallDamage") {
 }
 
 
-/* code for screen tint on death (unfinished) (needs auto respawn)
+/* code for screen tint on death
 const lobbySpawn = [-3.5, 91.0, -2.5];
 const tintTimers = {}; // playerId → tick count
 
 function onPlayerKilledOtherPlayer(attackingPlayer, killedPlayer, damageDealt, withItem) {
 	const killedName = api.getEntityName(killedPlayer);
+	api.setClientOptions(killedPlayer, {autoRespawn: true});
+	api.setClientOptions(killedPlayer, {cameraTint: [1, 0, 0, 0.3]});
+	tintTimers[killedPlayer] = 0; // ✅ Track tint for all deaths
 
 	if (withItem === "FallDamage") {
-		api.setClientOptions(killedPlayer, {cameraTint: [1, 0, 0, 0.3]});
-		api.sendFlyingMiddleMessage(killedPlayer, [{str: killedName + " fell from a high place",style:{color:"red"}}], 100);
-		tintTimers[killedPlayer] = 0; // Start tracking ticks
+		api.sendFlyingMiddleMessage(killedPlayer, [{str: killedName + " fell from a high place", style: {color: "red"}}], 100);
+	} else if (withItem === "Lava") {
+		api.sendFlyingMiddleMessage(killedPlayer, [{str: killedName + " died in lava", style: {color: "red"}}], 100);
 	}
 }
 
@@ -61,16 +64,65 @@ function onRespawnRequest(playerId) {
 	delete tintTimers[playerId]; // Stop tracking once they respawn
 	return lobbySpawn;
 }
+
 function tick() {
 	for (const playerId in tintTimers) {
 		tintTimers[playerId]++;
 
-		if (tintTimers[playerId] === 100) {
+		if (tintTimers[playerId] === 60) {
 			api.setClientOptions(playerId, {cameraTint: [0, 0, 0, 0]});
-			api.sendFlyingMiddleMessage(playerId, [{str:"Clearing screen tint (respawned at a bed)",style:{color:"Red"}}], 10000);
 			delete tintTimers[playerId];
 		}
 	}
 }
+*/
+/* adjustable messages
+const lobbySpawn = [-3.5, 91.0, -2.5];
+const tintTimers = {}; // playerId → tick count
 
+function onPlayerKilledOtherPlayer(attackingPlayer, killedPlayer, damageDealt, withItem) {
+	const killedName = api.getEntityName(killedPlayer);
+	api.setClientOptions(killedPlayer, {autoRespawn: true});
+	api.setClientOptions(killedPlayer, {cameraTint: [1, 0, 0, 0.3]});
+	tintTimers[killedPlayer] = 0;
+
+	let message = `${killedName} died`;
+	switch (withItem) {
+		case "FallDamage":
+			message = `${killedName} fell from a high place`;
+			break;
+		case "Lava":
+			message = `${killedName} died in lava`;
+			break;
+		case "Fireball Block":
+			message = `${killedName} went up in flames`;
+			break;
+		case "Moonstone Explosive":
+			message = `${killedName} blew up`;
+			break;
+		case "Iceball Block":
+			message = `${killedName} froze to death`;
+			break;
+		// Add more cases as needed
+	}
+
+	api.sendFlyingMiddleMessage(killedPlayer, [{str: message, style: {color: "red"}}], 1000);
+}
+
+function onRespawnRequest(playerId) {
+	api.setClientOptions(playerId, {cameraTint: [0, 0, 0, 0]});
+	delete tintTimers[playerId]; // Stop tracking once they respawn
+	return lobbySpawn;
+}
+
+function tick() {
+	for (const playerId in tintTimers) {
+		tintTimers[playerId]++;
+
+		if (tintTimers[playerId] === 60) {
+			api.setClientOptions(playerId, {cameraTint: [0, 0, 0, 0]});
+			delete tintTimers[playerId];
+		}
+	}
+}
 */
