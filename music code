@@ -1,0 +1,53 @@
+function onPlayerJoin(id){
+api.setPosition(id, [-51, 1, 35])}
+rs=0
+songStopped=0
+Instrument="harp_pling"
+Octave=-2
+const REF_PITCH = 144.73*(2**-Octave);
+
+function p(s) {
+playSong(myId, s)};
+
+function calcFreq(midiNote) {
+    return Math.pow(2, (midiNote - 69) / 12) * 440;
+};
+function calcRate(midiNote) {
+    return calcFreq(midiNote) / REF_PITCH;
+}
+
+let notesPlaying = []
+
+function playSong(playerId, song) {
+
+songStopped=0
+
+  if(songStopped == 0) {
+    notesPlaying = notesPlaying.concat(song
+        .map(note => ({
+            ...note
+            , playerId
+        })));
+  };
+};
+
+tick = (dt) => {
+    notesPlaying = notesPlaying.map(note => ({
+        ...note
+        , time: note.time - dt / 1000
+    }));
+    let stopIdx = undefined;
+    for (let i = 0; i < notesPlaying.length; i++) {
+        const note = notesPlaying[i];
+        if (note.time < 0) {
+            api.broadcastSound( Instrument, note.velocity, calcRate(note.midi));
+        } else {
+            stopIdx = i;
+            songStopped=1
+            break;
+}}
+    
+    stopIdx ??= notesPlaying.length;
+    
+    notesPlaying = notesPlaying.slice(stopIdx);
+};
