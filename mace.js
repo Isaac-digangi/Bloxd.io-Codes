@@ -1,3 +1,35 @@
+
+/* code for a wind charge (not complete)
+const tools = [
+  ["Moonstone Axe", 1],
+  ["Moonstone Fragment", 1],
+  ["Stone Hoe", 1],
+  ["Gold Spade", 1],
+  ["Gold Spade", 1],
+  ["Gold Spade", 1]
+];
+
+function onPlayerJoin(playerId) {
+  for (let i = 0; i < tools.length; i++) {
+    if (tools[i][0] === "Moonstone Fragment") {
+      api.setItemSlot(playerId, i, tools[i][0], tools[i][1], {
+        customDisplayName: "Wind Charge",
+        customDescription: "Use on the ground to get a boost!"
+      });
+    }
+  }
+}
+
+function onPlayerClick(id, alt) {
+  const slotidx = api.getSelectedInventorySlotI(id);
+  const itm = api.getItemSlot(id, slotidx);
+
+  if (itm !== null && itm.attributes?.customDisplayName === "Wind Charge") {
+    api.setVelocity(id, 0, 20, 0);
+  }
+}
+
+*/
 q=3
 
 roll_p={}
