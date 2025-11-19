@@ -1,32 +1,62 @@
 
 /* code for a wind charge (not complete)
-const tools = [
-  ["Moonstone Axe", 1],
-  ["Moonstone Fragment", 1],
-  ["Stone Hoe", 1],
-  ["Gold Spade", 1],
-  ["Gold Spade", 1],
-  ["Gold Spade", 1]
-];
+const lastGrounded = {};
 
-function onPlayerJoin(playerId) {
-  for (let i = 0; i < tools.length; i++) {
-    if (tools[i][0] === "Moonstone Fragment") {
-      api.setItemSlot(playerId, i, tools[i][0], tools[i][1], {
-        customDisplayName: "Wind Charge",
-        customDescription: "Use on the ground to get a boost!"
-      });
-    }
-  }
+function onBlockStand(playerId, x, y, z, blockName) {
+	lastGrounded[playerId] = Date.now();
 }
 
 function onPlayerClick(id, alt) {
-  const slotidx = api.getSelectedInventorySlotI(id);
-  const itm = api.getItemSlot(id, slotidx);
+	const slotidx = api.getSelectedInventorySlotI(id);
+	const itm = api.getItemSlot(id, slotidx);
 
-  if (itm !== null && itm.attributes?.customDisplayName === "Wind Charge") {
-    api.setVelocity(id, 0, 20, 0);
-  }
+	if (itm !== null && itm.attributes?.customDisplayName === "Wind Charge") {
+		const now = Date.now();
+		const last = lastGrounded[id] || 0;
+
+		if (now - last > 175) {
+			return;
+		}
+
+		api.setVelocity(id, 0, 20, 0);
+		api.removeI\u{74}emName(id, "Moonstone Fragment", 1)
+
+		const [x, y, z] = api.getPosition(id);
+		const py = y + 1;
+
+		api.playParticleEffect({
+  dir1: [-2, -1, -2],
+  dir2: [2, 2, 2],
+  pos1: [x - 1, y + 1, z - 1],
+  pos2: [x + 1, y + 2, z + 1],
+  texture: "drift",
+  minLifeTime: 0.2,
+  maxLifeTime: 0.6,
+  minEmitPower: 2,
+  maxEmitPower: 6,
+  minSize: 0.25,
+  maxSize: 0.4,
+  manualEmitCount: 60,
+  gravity: [0, -10, 0],
+  colorGradients: [
+    {
+      timeFraction: 0,
+      minColor: [100, 100, 100, 1],
+      maxColor: [180, 180, 180, 1],
+    },
+  ],
+  velocityGradients: [
+    {
+      timeFraction: 0,
+      factor: 1,
+      factor2: 1.2,
+    },
+  ],
+  blendMode: 1,
+});
+
+
+	}
 }
 
 */
