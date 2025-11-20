@@ -48,8 +48,8 @@ if (moonstoneRemoved >= moonstoneToRemove && diamondRemoved >= diamondToRemove) 
 } else {
   api.sendMessage(myId, "You need 2 Moonstones and 1 Diamond to craft a Wind Charge.");
 }
-//WORLD CODE_____________
 
+//WORLD CODE_____________
 
 const lastGrounded = {};
 
