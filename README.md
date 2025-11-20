@@ -7,6 +7,8 @@ Current list of codes in this repository:
 - Developer Items
 - Skins
 - Codeable Kill Aura
+- Mace PvP kit
+- Wind Charges code
 
 States of codes as of 11/4/25
 - Custom Achievements (still improving but works)
@@ -16,3 +18,5 @@ States of codes as of 11/4/25
 - Developer Items (Works but there are still more items missing (e.g. Portal blocks))
 - Skins (These codes don't work anymore because of recent skin change (new codes soon))
 - Codeable Kill Aura (Untested)
+- Mace PvP kit (works but needs a lot of improvement (not made by me))
+- Wind Charges (works | beginning of code used in code block, bottom used in world code)
