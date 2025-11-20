@@ -57,3 +57,49 @@ return [r,g,b];
 tick = () => {
 api.getPlayerIds().forEach(pid=>api.setClientOption(pid,"skyBox",{ type: "earth", vertexTint:getTimeColor((api.now()/120/*how long the cycle should last, in multiples of 10 seconds*/)%10000)}));
 } 
+
+/* UNTESTED NEW CODE
+let skySpeed = 10000;
+let inclinationList = [
+-0.6, -0.575, -0.55, -0.525, -0.5,
+-0.45, -0.4, -0.35, -0.3, -0.25,
+-0.2, -0.15, -0.05, 0.0, 0.05,
+0.1, 0.15, 0.2, 0.25, 0.3,
+0.35, 0.4, 0.45, 0.475, 0.5
+];
+let intervals = [
+15000, 15000, 15000, 15000, 15000, // night
+15000, 15000, 15000, 15000, 15000, // dawn
+skySpeed / 10, skySpeed / 10, skySpeed / 10, skySpeed / 10, skySpeed / 10, // morning
+skySpeed / 10, skySpeed / 10, skySpeed / 10, skySpeed / 10, skySpeed / 10, // afternoon
+15000, 15000, 15000, 15000, 15000 // sunset
+];
+let skyTime = 0;
+let skyIndex = 0;
+tick = (dt) => {
+skyTime += dt;
+while (skyTime >= intervals[skyIndex]) {
+skyTime -= intervals[skyIndex];
+skyIndex++;
+if (skyIndex >= intervals.length - 1) {
+skyIndex = 0;
+skyTime = 0;
+}
+}
+let t = skyTime / intervals[skyIndex];
+let startIncl = inclinationList[skyIndex];
+let endIncl = inclinationList[skyIndex + 1];
+let currentIncl = startIncl + (endIncl - startIncl) * t;
+api.getPlayerIds().forEach(id => {
+api.setClientOption(id, "skyBox", {
+type: "earth",
+inclination: currentIncl,
+turbidity: 1,
+luminance: 0.75,
+azimuth: 0,
+infiniteDistance: 3,
+vertexTint: [255, 255, 255],
+});
+});
+};
+*/
