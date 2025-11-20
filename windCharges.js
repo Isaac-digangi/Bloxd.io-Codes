@@ -1,46 +1,61 @@
 // CODE BLOCK__________________
 let moonstoneToRemove = 2;
 let diamondToRemove = 1;
-let moonstoneRemoved = 0;
-let diamondRemoved = 0;
 
-// Remove Moonstones
+let moonstoneCount = 0;
+let diamondCount = 0;
+
+// First pass: count items
 for (let i = 0; i <= 44; i++) {
-  if (moonstoneRemoved >= moonstoneToRemove) break;
-
   let item = api.getItemSlot(myId, i);
-  if (item && item.name === "Moonstone") {
-    let needed = moonstoneToRemove - moonstoneRemoved;
-    if (item.amount > needed) {
-      api.setItemSlot(myId, i, item.name, item.amount - needed, item.attributes);
-      moonstoneRemoved = moonstoneToRemove;
-    } else {
-      moonstoneRemoved += item.amount;
-      api.setItemSlot(myId, i, null, 0, null);
-    }
+  if (!item || !item.name) continue;
+
+  if (item.name === "Moonstone") {
+    moonstoneCount += item.amount;
+  } else if (item.name === "Diamond") {
+    diamondCount += item.amount;
   }
 }
 
-// Remove Diamonds
-for (let i = 0; i <= 44; i++) {
-  if (diamondRemoved >= diamondToRemove) break;
+// Check if player has enough of each
+if (moonstoneCount >= moonstoneToRemove && diamondCount >= diamondToRemove) {
+  let moonstoneRemoved = 0;
+  let diamondRemoved = 0;
 
-  let item = api.getItemSlot(myId, i);
-  if (item && item.name === "Diamond") {
-    let needed = diamondToRemove - diamondRemoved;
-    if (item.amount > needed) {
-      api.setItemSlot(myId, i, item.name, item.amount - needed, item.attributes);
-      diamondRemoved = diamondToRemove;
-    } else {
-      diamondRemoved += item.amount;
-      api.setItemSlot(myId, i, null, 0, null);
+  // Remove Moonstones
+  for (let i = 0; i <= 44; i++) {
+    if (moonstoneRemoved >= moonstoneToRemove) break;
+    let item = api.getItemSlot(myId, i);
+    if (item && item.name === "Moonstone") {
+      let needed = moonstoneToRemove - moonstoneRemoved;
+      if (item.amount > needed) {
+        api.setItemSlot(myId, i, item.name, item.amount - needed, item.attributes);
+        moonstoneRemoved = moonstoneToRemove;
+      } else {
+        moonstoneRemoved += item.amount;
+        api.setItemSlot(myId, i, "", 0, {});
+      }
     }
   }
-}
 
-// Craft Wind Charge if both ingredients were removed
-if (moonstoneRemoved >= moonstoneToRemove && diamondRemoved >= diamondToRemove) {
-  api.giveItem(myId, "Moonstone Fragment", 4, {
+  // Remove Diamonds
+  for (let i = 0; i <= 44; i++) {
+    if (diamondRemoved >= diamondToRemove) break;
+    let item = api.getItemSlot(myId, i);
+    if (item && item.name === "Diamond") {
+      let needed = diamondToRemove - diamondRemoved;
+      if (item.amount > needed) {
+        api.setItemSlot(myId, i, item.name, item.amount - needed, item.attributes);
+        diamondRemoved = diamondToRemove;
+      } else {
+        diamondRemoved += item.amount;
+        api.setItemSlot(myId, i, "", 0, {});
+      }
+    }
+  }
+
+  // Give Wind Charge
+  api.giveItem(myId, "Moonstone Fragment", 6, {
     customDisplayName: "Wind Charge",
     customDescription: "Use on the ground for a boost!"
   });
