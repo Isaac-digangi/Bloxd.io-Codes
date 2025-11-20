@@ -1,3 +1,78 @@
+//FOR CRAFTING IN CODE BLOCK________
+let moonstoneToRemove = 5;
+let diamondToRemove = 5;
+let plankToRemove = 1;
+let moonstoneRemoved = 0;
+let diamondRemoved = 0;
+let plankRemoved = 0;
+
+// Remove Moonstones
+for (let i = 0; i <= 44; i++) {
+  if (moonstoneRemoved >= moonstoneToRemove) break;
+
+  let item = api.getItemSlot(myId, i);
+  if (item && item.name === "Moonstone") {
+    let needed = moonstoneToRemove - moonstoneRemoved;
+    if (item.amount > needed) {
+      api.setItemSlot(myId, i, item.name, item.amount - needed, item.attributes);
+      moonstoneRemoved = moonstoneToRemove;
+    } else {
+      moonstoneRemoved += item.amount;
+      api.setItemSlot(myId, i, null, 0, null);
+    }
+  }
+}
+
+// Remove Diamonds
+for (let i = 0; i <= 44; i++) {
+  if (diamondRemoved >= diamondToRemove) break;
+
+  let item = api.getItemSlot(myId, i);
+  if (item && item.name === "Diamond") {
+    let needed = diamondToRemove - diamondRemoved;
+    if (item.amount > needed) {
+      api.setItemSlot(myId, i, item.name, item.amount - needed, item.attributes);
+      diamondRemoved = diamondToRemove;
+    } else {
+      diamondRemoved += item.amount;
+      api.setItemSlot(myId, i, null, 0, null);
+    }
+  }
+}
+
+for (let i = 0; i <= 44; i++) {
+  if (plankRemoved >= plankToRemove) break;
+
+  let item = api.getItemSlot(myId, i);
+  if (item && item.name && item.name.includes("Plank")) {
+    let needed = plankToRemove - plankRemoved;
+    if (item.amount > needed) {
+      api.setItemSlot(myId, i, item.name, item.amount - needed, item.attributes);
+      plankRemoved = plankToRemove;
+    } else {
+      plankRemoved += item.amount;
+      api.setItemSlot(myId, i, "", 0, {}); // safely clears the slot
+    }
+  }
+}
+
+// Craft Mace if all ingredients were removed
+if (
+  moonstoneRemoved >= moonstoneToRemove &&
+  diamondRemoved >= diamondToRemove &&
+  plankRemoved >= plankToRemove
+) {
+  api.giveItem(myId, "Moonstone Axe", 1, {
+    customDisplayName: "Mace",
+    customDescription: "The more you fall the higher the damage!"
+  });
+  api.sendFlyingMiddleMessage(myId, ["Mace crafted!"], 1000);
+} else {
+  api.sendMessage(myId, "You need 5 Moonstones, 5 Diamond, and 1 Plank to craft a Mace.");
+}
+
+//WORLD CODE___________
+
 q=3
 
 roll_p={}
