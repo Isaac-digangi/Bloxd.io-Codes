@@ -128,45 +128,69 @@ api.playParticleEffect({
 }
 
 /*
-UNTESTED KEEP INVENTORY CODE
+STILL TESTING KEEP INVENTORY CODE
+
+let savedInventory = [];
 
 function onPlayerKilledOtherPlayer(mobId, playerId, damage, item) {
-    if (api.hasItem(playerId, "Gold Coin")) {
-        // Enable keepInventory temporarily
-        api.setClientOptions(playerId, { keepInventory: true });
-
-        // Respawn with buffs
-        api.forceRespawn(playerId, api.getPosition(playerId));
-        api.setShieldAmount(playerId, 40);
-        api.setHealth(playerId, 50);
-        api.applyEffect(playerId, "Health Regen", 5000, { inbuiltLevel: 2 });
-        api.applyEffect(playerId, "Damage Reduction", 10000, { inbuiltLevel: 2 });
-
-        // Consume the totem
-        api.removeItemName(playerId, "Gold Coin", 1);
-
-        playParticles(playerId);
-
-        // Reset keepInventory back to false so normal deaths drop items
-        api.setClientOptions(playerId, { keepInventory: false });
+  if (api.hasItem(playerId, "Gold Coin")) {
+    // Save inventory
+    savedInventory = [];
+    for (let i = 0; i <= 44; i++) {
+      let item = api.getItemSlot(playerId, i);
+      if (item) savedInventory.push({ slot: i, item });
     }
+
+    // Respawn and restore
+    api.forceRespawn(playerId, api.getPosition(playerId));
+    api.setHealth(playerId, 50);
+    api.setShieldAmount(playerId, 40);
+	api.applyEffect(playerId, "Health Regen", 5000, {inbuiltLevel: 2});
+	api.applyEffect(playerId, "Damage Reduction", 10000, {inbuiltLevel: 2});
+	api.applyEffect(playerId, "Heat Resistance", 5000, {inbuiltLevel: 2});
+    api.removeItemName(playerId, "Gold Coin", 1);
+    playParticles(playerId);
+
+    // Restore inventory
+    for (let entry of savedInventory) {
+      api.setItemSlot(playerId, entry.slot, entry.item.name, entry.item.amount, entry.item.attributes);
+    }
+  }
 }
 
-function onMobKilledPlayer(mobId, playerId) {
-    if (api.hasItem(playerId, "Gold Coin")) {
-        api.setClientOptions(playerId, { keepInventory: true });
 
-        api.forceRespawn(playerId, api.getPosition(playerId));
-        api.setShieldAmount(playerId, 40);
-        api.setHealth(playerId, 50);
-        api.applyEffect(playerId, "Health Regen", 5000, { inbuiltLevel: 2 });
-        api.applyEffect(playerId, "Damage Reduction", 10000, { inbuiltLevel: 2 });
-
-        api.removeItemName(playerId, "Gold Coin", 1);
-
-        playParticles(playerId);
-
-        api.setClientOptions(playerId, { keepInventory: false });
-    }
+function playParticles(playerId)
+{
+		let [x, y, z] = api.getPosition(playerId);
+api.playParticleEffect({
+ 		dir1: [-1, -1, -1],
+ 		dir2: [1, 1, 1],
+  		pos1: [x + 2, y + 1.5, z + 2],
+    	pos2: [x - 2, y - 1.5, z - 2],
+    	texture: "square_particle",
+    	minLifeTime: 0.5,
+    	maxLifeTime: 2,
+    	minEmitPower: 4,
+    	maxEmitPower: 6,
+    	minSize: 0.1,
+   		maxSize: 0.5,
+    	manualEmitCount: 200,
+    	gravity: [0, -10, 0],
+    	colorGradients: [
+   	    {
+   	        timeFraction: 0,
+            minColor: [211, 214, 0, 0.5],
+            maxColor: [600, 500, 500, 0.8],
+        },
+    	],
+    	velocityGradients: [
+        {
+            timeFraction: 1,
+            factor: 0.2,
+            factor2: 1,
+        },
+    	],
+    	blendMode: 1,
+	})
 }
 */
