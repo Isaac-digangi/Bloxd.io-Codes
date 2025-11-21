@@ -126,3 +126,47 @@ api.playParticleEffect({
     	blendMode: 1,
 	})
 }
+
+/*
+UNTESTED KEEP INVENTORY CODE
+
+function onPlayerKilledOtherPlayer(mobId, playerId, damage, item) {
+    if (api.hasItem(playerId, "Gold Coin")) {
+        // Enable keepInventory temporarily
+        api.setClientOptions(playerId, { keepInventory: true });
+
+        // Respawn with buffs
+        api.forceRespawn(playerId, api.getPosition(playerId));
+        api.setShieldAmount(playerId, 40);
+        api.setHealth(playerId, 50);
+        api.applyEffect(playerId, "Health Regen", 5000, { inbuiltLevel: 2 });
+        api.applyEffect(playerId, "Damage Reduction", 10000, { inbuiltLevel: 2 });
+
+        // Consume the totem
+        api.removeItemName(playerId, "Gold Coin", 1);
+
+        playParticles(playerId);
+
+        // Reset keepInventory back to false so normal deaths drop items
+        api.setClientOptions(playerId, { keepInventory: false });
+    }
+}
+
+function onMobKilledPlayer(mobId, playerId) {
+    if (api.hasItem(playerId, "Gold Coin")) {
+        api.setClientOptions(playerId, { keepInventory: true });
+
+        api.forceRespawn(playerId, api.getPosition(playerId));
+        api.setShieldAmount(playerId, 40);
+        api.setHealth(playerId, 50);
+        api.applyEffect(playerId, "Health Regen", 5000, { inbuiltLevel: 2 });
+        api.applyEffect(playerId, "Damage Reduction", 10000, { inbuiltLevel: 2 });
+
+        api.removeItemName(playerId, "Gold Coin", 1);
+
+        playParticles(playerId);
+
+        api.setClientOptions(playerId, { keepInventory: false });
+    }
+}
+*/
