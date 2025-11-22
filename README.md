@@ -26,5 +26,5 @@ States of codes as of 11/19/25
 - Mace PvP kit (works but needs a lot of improvement (not made by me))
 - Wind Charges (works | beginning of code used in code block, bottom used in world code)
 - Mace code (only crafting added no world code to make it work yet)
-- Totem of Undying (crafting and world code added (almost works but items drop when the totem force respawns)(need to change from gold coin to an unstackable item))
+- Totem of Undying (crafting and world code added (sticks for undying totems (might change to gold shovel)
 - full world code (not updated | mostly works)
