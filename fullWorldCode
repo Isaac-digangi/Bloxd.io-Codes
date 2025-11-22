@@ -1,5 +1,8 @@
 function onPlayerJoin(myId) {
 const playerName = api.getEntityName(myId);
+/*
+api.giveItem(myId, "Moonstone Fragment", 999, {customDisplayName:"Wind Charge"});
+*/
 
 api.sendTopRightHelper(myId, "crown", "Welcome " + playerName, {duration:5, height:85, width:300, color:"#00008b", iconSizeMult:2, textAndIconColor:"#FFFFFF", fontSize:"18px"})
 
@@ -40,57 +43,193 @@ api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
 }, true)
 }
 }
+/*
+// ________________________________________________
+const lobbySpawn = [-3.5, 91.0, -2.5];
+const tintTimers = {}; // playerId → tick count
 
 function onPlayerKilledOtherPlayer(attackingPlayer, killedPlayer, damageDealt, withItem) {
-	const attackerName = api.getEntityName(attackingPlayer);
 	const killedName = api.getEntityName(killedPlayer);
+	api.setClientOptions(killedPlayer, {autoRespawn: true});
+	api.setClientOptions(killedPlayer, {cameraTint: [1, 0, 0, 0.3]});
+	tintTimers[killedPlayer] = 0; // ✅ Track tint for all deaths
 
 	if (withItem === "FallDamage") {
-		api.setClientOptions(killedPlayer, {cameraTint: [1, 0, 0, 0.3]});
-		api.sendFlyingMiddleMessage(killedPlayer, [killedName + " fell from a high place"], 100);
+		api.sendFlyingMiddleMessage(killedPlayer, [{str: killedName + " fell from a high place", style: {color: "red"}}], 100);
+	} else if (withItem === "Lava") {
+		api.sendFlyingMiddleMessage(killedPlayer, [{str: killedName + " died in lava", style: {color: "red"}}], 100);
 	}
 }
-/*
-function onRespawnRequest(killedPlayer) {
-	const respawnLoc = [-3.50, 91.00, -2.50]; // Example location
 
-	api.broadcastMessage("Respawn triggered for " + api.getEntityName(killedPlayer));
-	api.setClientOptions(killedPlayer, {cameraTint: [0, 0, 0, 0]});
-
-	return respawnLoc;
+function onRespawnRequest(playerId) {
+	api.setClientOptions(playerId, {cameraTint: [0, 0, 0, 0]});
+	delete tintTimers[playerId]; // Stop tracking once they respawn
+	return lobbySpawn;
 }
 
+function tick() {
+	for (const playerId in tintTimers) {
+		tintTimers[playerId]++;
 
-const bedSpawns = {};
-
-onPlayerAltAction = (playerId, x, y, z, block, targetEId) => {
-	// Check if the player right-clicked a bed
-	if (block.includes("Bed")) {
-		// Store the spawn point slightly above the bed
-		spawnPoint(playerId) = [x, y + 1, z];
-		api.broadcastMessage(api.getEntityName(playerId) + " set spawn at bed: " + x + ", " + (y + 1) + ", " + z);
+		if (tintTimers[playerId] === 60) {
+			api.setClientOptions(playerId, {cameraTint: [0, 0, 0, 0]});
+			delete tintTimers[playerId];
+		}
 	}
-};
+}
 */
+tools = [
+["Moonstone Axe",1],
+["Moonstone Fragment",1],
+]
 
-const bedSpawns = {};
+const lastGrounded = {};
 
-onPlayerAltAction = (playerId, x, y, z, block, targetEId) => {
-	// Detect bed interaction
-	if (block && block.includes("Bed")) {
-		spawnPoint[playerId] = [x, y + 1, z]; // Spawn slightly above bed
-		api.broadcastMessage(api.getEntityName(playerId) + " set spawn at bed: " + x + ", " + (y + 1) + ", " + z);
-	}
+onBlockStand = (playerId, x, y, z, blockName) => {
+  lastGrounded[playerId] = Date.now();
 };
 
-onRespawnRequest = (playerId) => {
+onPlayerClick = (id, alt) => {
+  const slotidx = api.getSelectedInventorySlotI(id);
+  const itm = api.getItemSlot(id, slotidx);
 
-	if (spawnPoint[playerId]) {
-		return spawnPoint[playerId];
-		api.broadcastMessage("Resetting tint for " + api.getEntityName(playerId));
-		api.setClientOptions(playerId, {cameraTint: [0, 0, 0, 0]});
-	}else{
-		return [-3.50, 91.00, -2.50];
-	}
+  if (itm !== null && itm.attributes?.customDisplayName === "Wind Charge") {
+    const now = Date.now();
+    const last = lastGrounded[id] || 0;
+
+    if (now - last > 175) {
+      return;
+    }
+
+    api.setVelocity(id, 0, 20, 0);
+    api.removeItemName(id, "Moonstone Fragment", 1);
+
+    const pos = api.getPosition(id);
+    const x = pos[0];
+    const y = pos[1];
+    const z = pos[2];
+
+    api.playParticleEffect({
+      dir1: [-2, -1, -2],
+      dir2: [2, 2, 2],
+      pos1: [x - 1, y + 1, z - 1],
+      pos2: [x + 1, y + 2, z + 1],
+      texture: "drift",
+      minLifeTime: 0.2,
+      maxLifeTime: 0.6,
+      minEmitPower: 2,
+      maxEmitPower: 6,
+      minSize: 0.25,
+      maxSize: 0.4,
+      manualEmitCount: 60,
+      gravity: [0, -10, 0],
+      colorGradients: [
+        {
+          timeFraction: 0,
+          minColor: [100, 100, 100, 1],
+          maxColor: [180, 180, 180, 1],
+        },
+      ],
+      velocityGradients: [
+        {
+          timeFraction: 0,
+          factor: 1,
+          factor2: 1.2,
+        },
+      ],
+      blendMode: 1,
+    });
+  }
 };
 
+function playParticles(playerId)
+{
+		let [x, y, z] = api.getPosition(playerId);
+api.playParticleEffect({
+ 		dir1: [-1, -1, -1],
+ 		dir2: [1, 1, 1],
+  		pos1: [x + 2, y + 1.5, z + 2],
+    	pos2: [x - 2, y - 1.5, z - 2],
+    	texture: "square_particle",
+    	minLifeTime: 0.5,
+    	maxLifeTime: 2,
+    	minEmitPower: 4,
+    	maxEmitPower: 6,
+    	minSize: 0.1,
+   		maxSize: 0.5,
+    	manualEmitCount: 200,
+    	gravity: [0, -10, 0],
+    	colorGradients: [
+   	    {
+   	        timeFraction: 0,
+            minColor: [211, 214, 0, 0.5],
+            maxColor: [600, 500, 500, 0.8],
+        },
+    	],
+    	velocityGradients: [
+        {
+            timeFraction: 1,
+            factor: 0.2,
+            factor2: 1,
+        },
+    	],
+    	blendMode: 1,
+	})
+}
+
+function onPlayerKilledOtherPlayer(mobId, playerId, damage, item) {
+const playerName = api.getEntityName(playerId);
+    if (hasTotem(playerId)) {
+
+        api.forceRespawn(playerId, api.getPosition(playerId));
+        api.setShieldAmount(playerId, 40);
+        api.setHealth(playerId, 50);
+        api.applyEffect(playerId, "Health Regen", 45000, { inbuiltLevel: 2 });
+        api.applyEffect(playerId, "Damage Reduction", 5000, { inbuiltLevel: 2 });
+        api.applyEffect(playerId, "Heat Resistance", 40000, { inbuiltLevel: 1 });
+
+        removeTotem(playerId);
+        playParticles(playerId);
+		api.broadcastMessage(playerName + " Revived with a Totem of Undying");
+    }
+}
+
+function onMobKilledPlayer(mobId, playerId) {
+const playerName = api.getEntityName(playerId);
+    if (hasTotem(playerId)) {
+
+        api.forceRespawn(playerId, api.getPosition(playerId));
+        api.setShieldAmount(playerId, 40);
+        api.setHealth(playerId, 50);
+        api.applyEffect(playerId, "Health Regen", 45000, { inbuiltLevel: 2 });
+        api.applyEffect(playerId, "Damage Reduction", 5000, { inbuiltLevel: 2 });
+        api.applyEffect(playerId, "Heat Resistance", 40000, { inbuiltLevel: 1 });
+
+        removeTotem(playerId);
+        playParticles(playerId);
+		api.broadcastMessage(playerName + " Revived with a Totem of Undying");
+
+    }
+}
+
+// Helper: check if player has a Stick named "Totem of Undying"
+function hasTotem(playerId) {
+    for (let i = 0; i <= 44; i++) {
+        let item = api.getItemSlot(playerId, i);
+        if (item && item.name === "Stick" && item.attributes?.customDisplayName === "Totem of Undying") {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Helper: remove one Totem of Undying
+function removeTotem(playerId) {
+    for (let i = 0; i <= 44; i++) {
+        let item = api.getItemSlot(playerId, i);
+        if (item && item.name === "Stick" && item.attributes?.customDisplayName === "Totem of Undying") {
+            api.removeItemName(playerId, "Stick", 1) // clear the slot
+            break; // remove only one
+        }
+    }
+}
