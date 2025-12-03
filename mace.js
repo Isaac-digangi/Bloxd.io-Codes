@@ -1,3 +1,73 @@
+/* world code still testing
+// Config
+const MACE_NAME = "Moonstone Axe";
+const MACE_DISPLAY = "Mace";
+const UP_FORCE = 20;        // how hard to launch upward
+const BOOST_TICKS = 3;      // reapply for a few ticks so velocity isn't eaten by damage resolution
+const COOLDOWN_MS = 250;    // small cooldown to avoid rapid re-triggers
+
+// Per-player state
+const maceLastLaunch = {};     // playerId -> timestamp
+const maceBoostLeft = {};      // playerId -> remaining ticks to reapply
+
+// Utility: check mace item
+function isMace(withItem) {
+  return withItem
+    && withItem.name === MACE_NAME
+    && withItem.attributes?.customDisplayName === MACE_DISPLAY;
+}
+
+// Launch the attacker, with short reapply window
+function launchAttacker(attackerId) {
+  const now = Date.now();
+  if (maceLastLaunch[attackerId] && now - maceLastLaunch[attackerId] < COOLDOWN_MS) return;
+
+  maceLastLaunch[attackerId] = now;
+  maceBoostLeft[attackerId] = BOOST_TICKS;
+
+  // First kick
+  api.setVelocity(attackerId, 0, UP_FORCE, 0);
+}
+
+// Reapply upward velocity for a few ticks to resist cancellation
+onTick = () => {
+  for (const id in maceBoostLeft) {
+    if (maceBoostLeft[id] > 0) {
+      api.setVelocity(id, 0, UP_FORCE, 0);
+      maceBoostLeft[id]--;
+      if (maceBoostLeft[id] <= 0) delete maceBoostLeft[id];
+    }
+  }
+};
+
+// Player -> Mob
+onPlayerDamagingMob = (playerId, mobId, damageDealt, withItem) => {
+  if (!isMace(withItem)) return;
+  launchAttacker(playerId);
+};
+
+// Player -> Player
+onPlayerDamagingOtherPlayer = (attackingPlayer, damagedPlayer, damageDealt, withItem, bodyPartHit, damagerDbId) => {
+  if (!isMace(withItem)) return;
+  launchAttacker(attackingPlayer);
+};
+
+// Player -> Mesh entity
+onPlayerDamagingMeshEntity = (playerId, damagedId, damageDealt, withItem) => {
+  if (!isMace(withItem)) return;
+  launchAttacker(playerId);
+};
+
+//_______________________________________
+
+onPlayerDamagingMob = (playerId, mobId, damageDealt, withItem) => {
+	api.setVelocity(playerId, 0, 20, 0);
+}
+
+*/
+
+
+
 //FOR CRAFTING IN CODE BLOCK________
 let moonstoneToRemove = 5;
 let diamondToRemove = 5;
