@@ -150,7 +150,7 @@ if (
   }
 
   // Give Mace
-  api.giveItem(myId, "Moonstone Axe", 1, {
+  api.giveItem(myId, "Artisan Axe", 1, {
     customDisplayName: "Mace",
     customDescription: "The more you fall the higher the damage!"
   });
