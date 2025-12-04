@@ -55,7 +55,7 @@ if (goldBlockCount >= goldBlockToRemove && moonstoneCount >= moonstoneToRemove) 
   }
 
   // Give Totem of Undying (as a renamed Gold Coin)
-  api.giveItem(myId, "Gold Coin", 1, {
+  api.giveItem(myId, "Gold Spade", 1, {
     customDisplayName: "Totem of Undying",
     customDescription: "Revives you once when you take fatal damage"
   });
@@ -66,62 +66,66 @@ if (goldBlockCount >= goldBlockToRemove && moonstoneCount >= moonstoneToRemove) 
 
 //WORLD CODE ______ (keeps inventory on forced respawn (killfeed still shows death but broadcasted message says that you revived))
 
-function onPlayerKilledOtherPlayer(mobId, playerId, damage, item) {
-const playerName = api.getEntityName(playerId);
-    if (hasTotem(playerId)) {
+const armedTotems = {};
 
-        api.forceRespawn(playerId, api.getPosition(playerId));
-        api.setShieldAmount(playerId, 40);
-        api.setHealth(playerId, 50);
-        api.applyEffect(playerId, "Health Regen", 45000, { inbuiltLevel: 2 });
-        api.applyEffect(playerId, "Damage Reduction", 5000, { inbuiltLevel: 2 });
-        api.applyEffect(playerId, "Heat Resistance", 40000, { inbuiltLevel: 1 });
+function onPlayerClick(playerId, wasAltClick) {
+    const playerName = api.getEntityName(playerId);
+    const heldItem = api.getHeldItem(playerId);
 
-        removeTotem(playerId);
-        playParticles(playerId);
-		api.broadcastMessage(playerName + " Revived with a Totem of Undying");
+    if (wasAltClick && heldItem && heldItem.name === "Gold Spade" &&
+        heldItem.attributes?.customDisplayName === "Totem of Undying") {
+        
+        // Only allow arming if not already armed
+        if (!armedTotems[playerId]) {
+            // Remove one Totem
+            api.removeItemName(playerId, "Gold Spade", 1);
+
+            // Mark player as armed
+            armedTotems[playerId] = true;
+
+            api.broadcastMessage(playerName + " armed a Totem of Undying!");
+            // Cosmetic effect to show it's armed
+            api.applyEffect(playerId,"Equipped Totem of Undying",2000,{icon:"Gold Spade"})
+        } else {
+            api.sendFlyingMiddleMessage(playerId, [{str:"You already have a Totem armed!", style:{color:"yellow"}}], 2000);
+        }
     }
+}
+
+
+function onPlayerKilledOtherPlayer(attackerId, playerId, damage, item) {
+    reviveWithTotem(playerId);
 }
 
 function onMobKilledPlayer(mobId, playerId) {
-const playerName = api.getEntityName(playerId);
-    if (hasTotem(playerId)) {
+    reviveWithTotem(playerId);
+}
 
+function reviveWithTotem(playerId) {
+    const playerName = api.getEntityName(playerId);
+
+    if (armedTotems[playerId]) {
+        // Cancel death by respawning immediately
         api.forceRespawn(playerId, api.getPosition(playerId));
+
+        // Buffs
         api.setShieldAmount(playerId, 40);
         api.setHealth(playerId, 50);
         api.applyEffect(playerId, "Health Regen", 45000, { inbuiltLevel: 2 });
         api.applyEffect(playerId, "Damage Reduction", 5000, { inbuiltLevel: 2 });
         api.applyEffect(playerId, "Heat Resistance", 40000, { inbuiltLevel: 1 });
 
-        removeTotem(playerId);
+        // Clear armed state so it only works once
+        delete armedTotems[playerId];
+
         playParticles(playerId);
-		api.broadcastMessage(playerName + " Revived with a Totem of Undying");
+        api.broadcastMessage(playerName + " was saved by their Totem of Undying!");
+		
+
 
     }
 }
 
-// Helper: check if player has a Stick named "Totem of Undying"
-function hasTotem(playerId) {
-    for (let i = 0; i <= 44; i++) {
-        let item = api.getItemSlot(playerId, i);
-        if (item && item.name === "Stick" && item.attributes?.customDisplayName === "Totem of Undying") {
-            return true;
-        }
-    }
-    return false;
-}
-
-// Helper: remove one Totem of Undying
-function removeTotem(playerId) {
-    for (let i = 0; i <= 44; i++) {
-        let item = api.getItemSlot(playerId, i);
-        if (item && item.name === "Stick" && item.attributes?.customDisplayName === "Totem of Undying") {
-            api.removeItemName(playerId, "Stick", 1) // clear the slot
-            break; // remove only one
-        }
-    }
-}
 
 function playParticles(playerId)
 {
