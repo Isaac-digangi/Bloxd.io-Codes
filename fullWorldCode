@@ -7,18 +7,33 @@ Totem of Undying code by: x_Drxth
 tested and improved by: M1DNIGHT_SV
 */
 
+/*
 //PLAYER JOIN ___________________
 
 function onPlayerJoin(myId) {
 const playerName = api.getEntityName(myId);
 
-api.sendTopRightHelper(myId, "crown", "Welcome to GalaxySMP" + playerName, {duration:5, height:85, width:300, color:"#00008b", iconSizeMult:2, textAndIconColor:"#FFFFFF", fontSize:"18px"})
+api.sendTopRightHelper(myId, "crown", "Welcome to GalaxySMP", {duration:5, height:85, width:300, color:"#00008b", iconSizeMult:2, textAndIconColor:"#FFFFFF", fontSize:"18px"})
 
 api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
     content: [{str:api.getEntityName(myId),style:{color:"white"}}],
     subtitle: [{str:"Player",style:{color:"white"}}],
  backgroundColor: "black",
 }, true)
+
+if(api.isMobile(myId) === "True"){
+api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
+    content: [{str:api.getEntityName(myId),style:{color:"white"}}],
+    subtitle: [{str:"Player | Mobile",style:{color:"white"}}],
+ backgroundColor: "black",
+}, true)
+}else{
+api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
+    content: [{str:api.getEntityName(myId),style:{color:"white"}}],
+    subtitle: [{str:"Player | PC",style:{color:"white"}}],
+ backgroundColor: "black",
+}, true)
+}
 
 if(playerName === "M1DNIGHT_SV") {
 api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
@@ -35,11 +50,20 @@ api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
  backgroundColor: "black",
 }, true)
 }
+
+if(playerName === "l__M1DNIGHT__l") {
+api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
+    content: [{str:api.getEntityName(myId),style:{color:"#5c00a4"}}],
+    subtitle: [{str:"Lobby Owner / Lobby Dev",style:{color:"cyan"}}],
+ backgroundColor: "black",
+}, true)
 }
 
+}
 // _________________
-
-//MACE _____________________
+// =======================
+// MACE
+// =======================
 
 function onPlayerDamagingMob(attackerId, targetId, damageAmount, itemName) {
     try {
@@ -47,9 +71,8 @@ function onPlayerDamagingMob(attackerId, targetId, damageAmount, itemName) {
         if (!heldItem) return
 
         // Check for Mace custom item
-        if (heldItem?.name === "Artisan Axe" && 
-    heldItem?.attributes?.customDisplayName === "Mace") {
-
+        if (heldItem?.name === "Artisan Axe" &&
+            heldItem?.attributes?.customDisplayName === "Mace") {
 
             const attackerPos = api.getPosition(attackerId)
 
@@ -116,25 +139,22 @@ function onPlayerDamagingOtherPlayer(attackerId, targetId, damageAmount, itemNam
         if (!heldItem) return
 
         // Check for Mace custom item
-        if (heldItem === "Artisan Axe" && heldItem?.attributes?.customDisplayName === "Mace") {
+        if (heldItem?.name === "Artisan Axe" &&
+            heldItem?.attributes?.customDisplayName === "Mace") {
+
             const attackerPos = api.getPosition(attackerId)
 
-            // Trigger slam only if attacker is slightly airborne
             if (attackerPos[1] - Math.floor(attackerPos[1]) > 0.1) {
-                // Deal bonus damage directly
                 api.applyHealthChange(targetId, -20, attackerId)
 
-                // Apply Slowness effect to the target
                 api.applyEffect(targetId, "Slowness", 2500, {
                     icon: "Slowness",
                     displayName: "Stunned",
                     inbuiltLevel: 2
                 })
 
-                // Launch attacker upward to give slam effect
                 api.setVelocity(attackerId, 0, 20, 0)
 
-                // Particle effect at target
                 const [x, y, z] = api.getPosition(targetId)
                 api.playParticleEffect({
                     dir1: [-3, -3, -3],
@@ -167,7 +187,6 @@ function onPlayerDamagingOtherPlayer(attackerId, targetId, damageAmount, itemNam
                     blendMode: 1
                 })
 
-                // Prevent default damage to avoid doubling
                 return "preventDamage"
             }
         }
@@ -176,152 +195,160 @@ function onPlayerDamagingOtherPlayer(attackerId, targetId, damageAmount, itemNam
     }
 }
 
-// ____________________
+// =======================
+// WIND CHARGES
+// =======================
 
-// WIND CHARGES ______________
-
-const lastGrounded = {};
+const lastGrounded = {}
 
 onBlockStand = (playerId, x, y, z, blockName) => {
-  lastGrounded[playerId] = Date.now();
-};
+    lastGrounded[playerId] = Date.now()
+}
 
 onPlayerClick = (id, alt) => {
-  const slotidx = api.getSelectedInventorySlotI(id);
-  const itm = api.getItemSlot(id, slotidx);
+    const slotidx = api.getSelectedInventorySlotI(id)
+    const itm = api.getItemSlot(id, slotidx)
 
-  if (itm !== null && itm.attributes?.customDisplayName === "Wind Charge") {
-    const now = Date.now();
-    const last = lastGrounded[id] || 0;
+    if (itm !== null && itm.attributes?.customDisplayName === "Wind Charge") {
+        const now = Date.now()
+        const last = lastGrounded[id] || 0
 
-    if (now - last > 175) {
-      return;
+        if (now - last > 175) {
+            return
+        }
+
+        api.setVelocity(id, 0, 20, 0)
+        api.removeItemName(id, "Moonstone Fragment", 1)
+
+        const pos = api.getPosition(id)
+        const [x, y, z] = pos
+
+        api.playParticleEffect({
+            dir1: [-2, -1, -2],
+            dir2: [2, 2, 2],
+            pos1: [x - 1, y + 1, z - 1],
+            pos2: [x + 1, y + 2, z + 1],
+            texture: "drift",
+            minLifeTime: 0.2,
+            maxLifeTime: 0.6,
+            minEmitPower: 2,
+            maxEmitPower: 6,
+            minSize: 0.25,
+            maxSize: 0.4,
+            manualEmitCount: 60,
+            gravity: [0, -10, 0],
+            colorGradients: [
+                {
+                    timeFraction: 0,
+                    minColor: [100, 100, 100, 1],
+                    maxColor: [180, 180, 180, 1],
+                },
+            ],
+            velocityGradients: [
+                {
+                    timeFraction: 0,
+                    factor: 1,
+                    factor2: 1.2,
+                },
+            ],
+            blendMode: 1,
+        })
     }
+}
+*/
+// =======================
+// TOTEM OF UNDYING
+// =======================
 
-    api.setVelocity(id, 0, 20, 0);
-    api.removeItemName(id, "Moonstone Fragment", 1);
+function onPlayerAttemptAltAction(id) {
+    const held = api.getHeldItem(id)
+    if (held?.name === "Gold Spade" &&
+        held?.attributes?.customDisplayName === "Totem Of Undying" &&
+        !api.getEffects(id).includes("Totem")) {
 
-    const pos = api.getPosition(id);
-    const x = pos[0];
-    const y = pos[1];
-    const z = pos[2];
-
-    api.playParticleEffect({
-      dir1: [-2, -1, -2],
-      dir2: [2, 2, 2],
-      pos1: [x - 1, y + 1, z - 1],
-      pos2: [x + 1, y + 2, z + 1],
-      texture: "drift",
-      minLifeTime: 0.2,
-      maxLifeTime: 0.6,
-      minEmitPower: 2,
-      maxEmitPower: 6,
-      minSize: 0.25,
-      maxSize: 0.4,
-      manualEmitCount: 60,
-      gravity: [0, -10, 0],
-      colorGradients: [
-        {
-          timeFraction: 0,
-          minColor: [100, 100, 100, 1],
-          maxColor: [180, 180, 180, 1],
-        },
-      ],
-      velocityGradients: [
-        {
-          timeFraction: 0,
-          factor: 1,
-          factor2: 1.2,
-        },
-      ],
-      blendMode: 1,
-    });
-  }
-};
-
-//___________________
-
-// TOTEM OF UNDYING _____________
-
-function onPlayerAttemptAltAction(id){
-
-	if (api.getHeldItem(id)?.name == "Gold Spade" &&
-		api.getHeldItem(id)?.attributes.customDisplayName == "Totem Of Undying"  		 &&	api.getEffects(id).includes ("Totem") == false){
-	       /* ---apply totem effect--- */
-		api.applyEffect(id, "Totem", null, {icon: "Gold Spade"})
-		slot = api.getSelectedInventorySlotI(id)
-		api.setItemSlot(id, slot, "Air")
-	}
+        // Apply Totem effect
+        api.applyEffect(id, "Totem", null, { icon: "Gold Spade" })
+        const slot = api.getSelectedInventorySlotI(id)
+        api.setItemSlot(id, slot, "Air")
+    }
 }
 
 function onPlayerDamagingOtherPlayer(attacker, victim, dmg) {
+    if (
+        (api.getHeldItem(victim)?.attributes?.customDisplayName === "Totem Of Undying" && api.getHealth(victim) - dmg < 5) ||
+        (api.getEffects(victim).includes("Totem") && api.getHealth(victim) - dmg < 5)
+    ) {
+        // --- TOTEM WORK ---
+        const pos = api.getPosition(victim)
+        api.applyEffect(victim, "Health Regen", 45000, { inbuiltLevel: 2 })
+        api.applyEffect(victim, "Heat Resistance", 40000, { inbuiltLevel: 1 })
+        api.applyEffect(victim, "Damage Reduction", 5000, { inbuiltLevel: 2 })
+        api.setHealth(victim, 30)
+        api.setShieldAmount(victim, 40)
+        particle(pos[0], pos[1], pos[2])
 
-  if (api.getHeldItem(victim)?.attributes.customDisplayName ==="Totem Of Undying" && api.getHealth(victim) - dmg < 5 || api.getEffects(victim).includes('Totem')
-      && api.getHealth(victim) - dmg < 5) {
-	/* ---TOTEM WORK--- */
-    const pos = api.getPosition(victim);
-    api.applyEffect(victim, 'Health Regen', 45000, {inbuiltLevel: 2});
-	api.applyEffect(victim, "Heat Resistance", 40000, {inbuiltLevel: 1})
-	api.applyEffect(victim, "Damage Reduction", 5000, {inbuiltLevel: 2})
-	api.setHealth(victim, 30)
-    api.setShieldAmount(victim, 40);
-    particle(pos[0], pos[1], pos[2]);
-    if (api.getHeldItem(victim)?.attributes.customDisplayName ==="Totem Of Undying"){
-	slot = api.getSelectedInventorySlotI(victim)
-	api.setItemSlot(victim, slot, "Air")}
-	else {api.removeEffect(victim, 'Totem');}
-  }
+        if (api.getHeldItem(victim)?.attributes?.customDisplayName === "Totem Of Undying") {
+            const slot = api.getSelectedInventorySlotI(victim)
+            api.setItemSlot(victim, slot, "Air")
+        } else {
+            api.removeEffect(victim, "Totem")
+        }
+    }
 }
 
 function onMobDamagingPlayer(attacker, victim, dmg) {
+    if (
+        (api.getHeldItem(victim)?.attributes?.customDisplayName === "Totem Of Undying" && api.getHealth(victim) - dmg < 5) ||
+        (api.getEffects(victim).includes("Totem") && api.getHealth(victim) - dmg < 5)
+    ) {
+        // --- TOTEM WORK ---
+        const pos = api.getPosition(victim)
+        api.applyEffect(victim, "Health Regen", 45000, { inbuiltLevel: 2 })
+        api.applyEffect(victim, "Heat Resistance", 40000, { inbuiltLevel: 1 })
+        api.applyEffect(victim, "Damage Reduction", 5000, { inbuiltLevel: 2 })
+        api.setHealth(victim, 30)
+        api.setShieldAmount(victim, 40)
+        particle(pos[0], pos[1], pos[2])
 
-  if (api.getHeldItem(victim)?.attributes.customDisplayName ==="Totem Of Undying" && api.getHealth(victim) - dmg < 5 || api.getEffects(victim).includes('Totem')
-      && api.getHealth(victim) - dmg < 5) {
-	/* ---TOTEM WORK--- */
-    const pos = api.getPosition(victim);
-    api.applyEffect(victim, 'Health Regen', 45000, {inbuiltLevel: 2});
-	api.applyEffect(victim, "Heat Resistance", 40000, {inbuiltLevel: 1})
-	api.applyEffect(victim, "Damage Reduction", 5000, {inbuiltLevel: 2})
-	api.setHealth(victim, 30)
-    api.setShieldAmount(victim, 40);
-    particle(pos[0], pos[1], pos[2]);
-    if (api.getHeldItem(victim)?.attributes.customDisplayName ==="Totem Of Undying"){
-	slot = api.getSelectedInventorySlotI(victim)
-	api.setItemSlot(victim, slot, "Air")}
-	else {api.removeEffect(victim, 'Totem');}
-  }
+        if (api.getHeldItem(victim)?.attributes?.customDisplayName === "Totem Of Undying") {
+            const slot = api.getSelectedInventorySlotI(victim)
+            api.setItemSlot(victim, slot, "Air")
+        } else {
+            api.removeEffect(victim, "Totem")
+        }
+    }
 }
 
-function particle(x, y, z){ 
-y += 1
-api.playParticleEffect({
- 		dir1: [-1, -1, -1],
- 		dir2: [1, 1, 1],
-  		pos1: [x + 2, y + 1.5, z + 2],
-    	pos2: [x - 2, y - 1.5, z - 2],
-    	texture: "glint",
-    	minLifeTime: 0.5,
-    	maxLifeTime: 2,
-    	minEmitPower: 4,
-    	maxEmitPower: 6,
-    	minSize: 0.1,
-   		maxSize: 0.5,
-    	manualEmitCount: 85,
-    	gravity: [0, -10, 0],
-    	colorGradients: [
-   	    {
-   	        timeFraction: 0,
-            minColor: [211, 214, 0, 0.5],
-            maxColor: [0, 255, 0, 0.8],
-        },
-    	],
-    	velocityGradients: [
-        {
-            timeFraction: 1,
-            factor: 0.2,
-            factor2: 1,
-        },
-    	],
-    	blendMode: 1,
-	})
+function particle(x, y, z) {
+    y += 1
+    api.playParticleEffect({
+        dir1: [-1, -1, -1],
+        dir2: [1, 1, 1],
+        pos1: [x + 2, y + 1.5, z + 2],
+        pos2: [x - 2, y - 1.5, z - 2],
+        texture: "glint",
+        minLifeTime: 0.5,
+        maxLifeTime: 2,
+        minEmitPower: 4,
+        maxEmitPower: 6,
+        minSize: 0.1,
+        maxSize: 0.5,
+        manualEmitCount: 85,
+        gravity: [0, -10, 0],
+        colorGradients: [
+            {
+                timeFraction: 0,
+                minColor: [211, 214, 0, 0.5],
+                maxColor: [0, 255, 0, 0.8],
+            },
+        ],
+        velocityGradients: [
+            {
+                timeFraction: 1,
+                factor: 0.2,
+                factor2: 1,
+            },
+        ],
+        blendMode: 1,
+    })
 }
