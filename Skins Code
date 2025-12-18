@@ -4,6 +4,30 @@
 * These skin codes no longer work because of recent bloxd.io skin customization update
 */
 
+//Custom blocks as parts of player character
+
+api.updateEntityNodeMeshAttachment(myId, "ArmRightMesh", "BloxdBlock",
+{blockName:"Tribe Protector",size:.3,
+meshOffset:[0,0,0]},[-0.08,-0.57,0],[0,0,0])
+
+api.updateEntityNodeMeshAttachment(myId, "ArmLeftMesh", "BloxdBlock",
+{blockName:"Protector",size:.3,
+meshOffset:[0,0,0]},[0.08,-0.57,0],[0,0,0])
+
+api.updateEntityNodeMeshAttachment(myId, "HeadMesh", "BloxdBlock",
+{blockName:"Code Block",size:.67,
+meshOffset:[0,0,0]},[0,0.33,0],[0,0,0])
+
+api.scalePlayerMeshNodes(myId, {
+"TorsoNode": [1,1,1], 
+"HeadMesh": [1,1,1],
+"ArmRightMesh": [1,1,1], 
+"ArmLeftMesh": [1,1,1], 
+"LegLeftMesh": [1,1,1],
+"LegRightMesh": [1,1,1],
+});
+
+
 // Available skins: IronMelon, Wizard, FireWizard, Zombie, TraderOne, TraderTwo, TraderThree.
 
 //**Only paste one and not the whole code lol**
