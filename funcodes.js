@@ -14,3 +14,22 @@ api.scalePlayerMeshNodes(myId, {
 "LegRightMesh": [1,1,1],
 }); //only legs
 
+//random teleport code anywhere from -30k to 30k
+//world code
+function randTeleport(){
+
+function randCoord(limit) {
+    return Math.floor(Math.random() * (limit * 2 + 1)) - limit;
+}
+
+let maxRange = 30000; // your chosen limit
+
+let x = randCoord(maxRange);
+let y = 25;
+let z = randCoord(maxRange);
+
+api.setPosition(myId, [x, y, z]);
+}
+
+//code block
+randTeleport();
