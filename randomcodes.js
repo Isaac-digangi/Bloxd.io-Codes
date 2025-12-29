@@ -62,3 +62,62 @@ randTeleport();
 
 //send icons as a flying middle message
 api.sendFlyingMiddleMessage(myId, [{icon: "Gold Spade", style: {fontSize: "500px"}}], 1000)
+
+
+
+//totem icon display (needs to be edited for world code)
+
+// Track all active totem animations
+const totemAnimations = {};
+
+// Start the animation for a player
+function playTotemAnimation(playerId) {
+    totemAnimations[playerId] = {
+        frame: 0,
+        ticks: 0,
+        frames: [
+            { opacity: 1.0, duration: 5 },
+            { opacity: 0.7, duration: 5 },
+            { opacity: 0.4, duration: 5 },
+            { opacity: 0.1, duration: 5 }
+        ]
+    };
+}
+
+// Update animations every tick
+api.onTick(() => {
+    for (const playerId in totemAnimations) {
+        const anim = totemAnimations[playerId];
+        const frame = anim.frames[anim.frame];
+
+        // Display the icon for this frame
+        api.sendFlyingMiddleMessage(playerId, [
+            { icon: "totem", style: { opacity: frame.opacity } }
+        ], frame.duration * 50); // convert ticks → ms
+
+        anim.ticks++;
+
+        // Move to next frame
+        if (anim.ticks >= frame.duration) {
+            anim.frame++;
+            anim.ticks = 0;
+
+            // Animation finished
+            if (anim.frame >= anim.frames.length) {
+                delete totemAnimations[playerId];
+            }
+        }
+    }
+});
+
+// Trigger revive + animation on death
+api.onPlayerDeath((playerId) => {
+    // Revive the player
+    api.setHealth(playerId, 20);
+
+    // Play magical sound
+    api.playSound(playerId, "harp_pling", 1, 1);
+
+    // Start the animation
+    playTotemAnimation(playerId);
+});
