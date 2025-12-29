@@ -57,3 +57,8 @@ api.setPosition(myId, [x, y, z]);
 
 //code block
 randTeleport();
+
+
+
+//send icons as a flying middle message
+api.sendFlyingMiddleMessage(myId, [{icon: "Gold Spade", style: {fontSize: "500px"}}], 1000)
