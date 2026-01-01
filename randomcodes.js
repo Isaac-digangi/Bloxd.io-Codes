@@ -121,3 +121,11 @@ api.onPlayerDeath((playerId) => {
     // Start the animation
     playTotemAnimation(playerId);
 });
+
+
+//automatic opening door :D
+onBlockStand = (playerId, x, y, z, blockName) => { 
+	if(blockName === "Block of Gold"){ 
+		api.setBlock([599, 7, 22000], "Maple Door|meta|rot4|open") 
+	}else{ api.setBlock([599, 7, 22000], "Maple Door|meta|rot4|closed") } 
+}
