@@ -129,3 +129,10 @@ onBlockStand = (playerId, x, y, z, blockName) => {
 		api.setBlock([599, 7, 22000], "Maple Door|meta|rot4|open") 
 	}else{ api.setBlock([599, 7, 22000], "Maple Door|meta|rot4|closed") } 
 }
+
+//send log of mob drops when mob spawns
+onPlayerSpawnMob = (playerId, mobId, mobType, x, y, z, mobHerdId, playSoundOnSpawn) => {
+	const drops = api.getMobSetting(mobId, "onDeathItemDrops", true);
+    api.log("Mob drops: " + JSON.stringify(drops))
+}
+
