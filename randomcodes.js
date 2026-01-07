@@ -145,3 +145,31 @@ api.editItemCraftingRecipes(myId, "Moonstone", [{
 		station: "Furnace"
 	}
 ]);
+
+//world code for hardcore mode (automatically kick players on death and join
+
+let banned = []
+
+onPlayerKilledOtherPlayer = (attacker, killed, damage, item) => {
+playerName = api.getEntityName(killed)
+    if (!banned.includes(killed.id)) {
+        banned.push(killed.id)
+    }
+    api.kickPlayer(killed, "You died in hardcore mode and cannot rejoin")
+	api.broadcastMessage(playerName + " has died and cannot rejoin", {color:"Red"})
+}
+
+onMobKilledPlayer = (attacker, killed, damage, item) => {
+    if (!banned.includes(killed.id)) {
+        banned.push(killed.id)
+    }
+    api.kickPlayer(killed, "You died in hardcore mode and cannot rejoin")
+	api.broadcastMessage(playerName + " has died and cannot rejoin", {color:"Red"})
+}
+
+onPlayerJoin = (player) => {
+    if (banned.includes(player.id)) {
+        api.kickPlayer(player, "You died in hardcore mode and cannot rejoin")
+		api.broadcastMessage(playerName + " has died and cannot rejoin", {color:"Red"})
+    }
+}
