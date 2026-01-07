@@ -136,3 +136,12 @@ onPlayerSpawnMob = (playerId, mobId, mobType, x, y, z, mobHerdId, playSoundOnSpa
     api.log("Mob drops: " + JSON.stringify(drops))
 }
 
+//editing of crafting recipes
+
+api.editItemCraftingRecipes(myId, "Moonstone", [{
+		requires: [
+			{ items: ["Diamond"], amt: 1 }],
+		produces: 1,
+		station: "Furnace"
+	}
+]);
