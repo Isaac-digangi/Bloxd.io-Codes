@@ -20,3 +20,33 @@ function onPlayerPickedUpItem(playerId, itemName, itemAmount){
   api.sendTopRightHelper(playerId, "crown", "Advancement Made! To The Moon!", {duration:5, height:85, width:300, color:"#a3d7f7", iconSizeMult:1, textAndIconColor:"#FFFFFF", fontSize:"18px"})
  }
 }
+
+/* 
+**extra code for testing**
+
+const playerMinedAchievements = {};
+
+function onPlayerMine(playerId, blockName) {
+  // Initialize player record if not present
+  if (!playerMinedAchievements[playerId]) {
+    playerMinedAchievements[playerId] = {};
+  }
+
+  // Diamond Mining Achievement
+  if (blockName === "Diamond Ore" && !playerMinedAchievements[playerId]["MinedDiamond"]) {
+    api.sendTopRightHelper(playerId, "crown", "Advancement Made! Diamonds!", {
+      duration: 5,
+      height: 85,
+      width: 300,
+      color: "#00c0ff",
+      iconSizeMult: 1,
+      textAndIconColor: "#FFFFFF",
+      fontSize: "18px"
+    });
+    playerMinedAchievements[playerId]["MinedDiamond"] = true;
+  }
+}
+
+
+
+*/
