@@ -32,7 +32,7 @@ Code status (1/11/26)
 
 Credits:
 - BluePandaBloxd    (achievements)
-- Bloxd Builder     (day/night cycle_
+- Bloxd Builder     (day/night cycle)
 - Nexo              (Dev items)
 - S0MPENDER         (Dev items)
 - BOLT_STRIKE_HT3   (Mace code)
