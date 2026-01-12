@@ -1,30 +1,41 @@
-Codes for Bloxd.io Worlds Lobbies
+Codes for Bloxd.io Worlds Lobbies | Compiled, edited, and tested by M1DNIGHT_SV
 
-Current list of codes in this repository:
-- Custom Achievements
-- Custom onDeath Messages
-- Day/Night Cycle
+List of codes
+- Achievements
+- Codeable KillAura
 - Developer Items
+- Day/Night Cycle
+- Custom Death Message
 - Skins
-- Codeable Kill Aura
-- Music code
-- Mace PvP kit
-- Wind Charges code
-- Mace code
 - Totem of Undying
-- Full world code for reference
+- Mace code (in full world code)
+- Mace PvP kit
+- Wind Charges
+- Music
+- +other random codes
 
-States of codes as of 11/19/25
-- Custom Achievements (still improving but works)
-- Custom onDeath Messages (I've just started work on these but they work so far)
-- (will use api.sendFlyingMiddleMessage instead of api.broadcastMessage | also use api.setClientOptions to delay respawn button)
-- Day/Night Cycle (recent Bloxd.io update broke this specific code (I will add a new one soon))
-- Developer Items (Works but there are still more items missing (e.g. Portal blocks))
-- Skins (These codes don't work anymore because of recent skin change (new codes soon))
-- Codeable Kill Aura (Untested)
-- Music code (Untested | no notes created)
-- Mace PvP kit (works but needs a lot of improvement (not made by me))
-- Wind Charges (works | beginning of code used in code block, bottom used in world code)
-- Mace code (only crafting added no world code to make it work yet)
-- Totem of Undying (crafting and world code added (sticks for undying totems (might change to gold shovel)
-- full world code (not updated | mostly works)
+
+Code status (1/11/26)
+- Achievements (works but keeps repeating on every trigger event)
+- KillAura (untested)
+- Developer Items (Works | split into multiple worktables because of the code size)
+- Day/Night cycle (bloxd updates broke the original but there is new code that needs to be tested)
+- Custom Death Messages (mostly works but stopped trying because of how big the file would need to be for every type of death)
+- Skins (original skins code messed up by new bloxd skins | now you can update poses, entity nodes, and new api for changing skin)
+- Totem of Undying (mostly works | check fullWorldCode for a better one)
+- Mace Code (does work | uses artisan axe for the item)
+- Mace PvP kit (MisterCasino's code) (works kinda, but would need to be edited)
+- Wind Charges (works, pretty simple (also check fullWorldCode for some)
+- Music (was a random code I had so it doesn't work rly)
+- randomcodes (a place to store all the random pieces of cool code that I didnt need a new file for (ex. particles on a player)
+
+
+Credits:
+- BluePandaBloxd    (achievements)
+- Bloxd Builder     (day/night cycle_
+- Nexo              (Dev items)
+- S0MPENDER         (Dev items)
+- BOLT_STRIKE_HT3   (Mace code)
+- x_Drxth           (Totem of Undying)
+- Itz_Pika_YT       (Totem of Undying)
+- M1DNIGHT_SV       (Death Messages, Wind Charges, Dev Items, randomcodes | edited and tested most files)
