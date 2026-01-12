@@ -26,7 +26,7 @@ Code status (1/11/26)
 - Mace Code (does work | uses artisan axe for the item)
 - Mace PvP kit (MisterCasino's code) (works kinda, but would need to be edited)
 - Wind Charges (works, pretty simple (also check fullWorldCode for some)
-- Music (was a random code I had so it doesn't work rly)
+- Music (was a random code I had that requires more code than I put in the file)
 - randomcodes (a place to store all the random pieces of cool code that I didnt need a new file for (ex. particles on a player)
 
 
