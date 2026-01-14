@@ -1,4 +1,37 @@
+/*
+    Counts the CPS of each player in the lobby and displays it on the right-info text
+    Built upon code by SowrdiWars at https://bloxdium.pages.dev/code?id=68y489e
+*/
 const playerCPS = {};
+
+function buildGlobalCPSList() {
+    const lines = [];
+
+    for (const id of api.getPlayerIds()) {
+        const cps = getDisplayedCPS(id);
+        const name = api.getEntityName(id) || ("Player " + id);
+
+        lines.push(
+            { str: `\n${name}: `, style: { color: "White", fontSize: "14px" } },
+            { str: cps, style: { color: "Red", fontSize: "14px", fontWeight: "bold" } }
+        );
+    }
+
+    return [
+        { str: "CPS of All Players", style: { color: "Red", fontSize: "16px", fontWeight: "bold" } },
+        ...lines,
+        { str: "\n----------------", style: { color: "White", fontSize: "14px" } }
+    ];
+}
+
+function UpdateAllPlayerGui() {
+    const text = buildGlobalCPSList();
+
+    for (const id of api.getPlayerIds()) {
+        api.setClientOption(id, "RightInfoText", text);
+    }
+}
+
 
 onPlayerClick = (playerId) => {
     const now = Date.now();
@@ -36,18 +69,7 @@ return;
     const data = slot0.attributes.customAttributes;
     const killstreak = data.killstreak || 0;
 
-    api.setClientOption(playerId, "RightInfoText", [
-        { str: "Your PvP Stats", style: { color: "Red", fontSize: "14px", fontWeight: "bold" } },
-        { str: "\nCPS: ", style: { color: "White", fontSize: "14px" } },
-        { str: cps, style: { color: "Red", fontSize: "14px", fontWeight: "bold" } },
-        { str: "\nCombo: ", style: { color: "White", fontSize: "14px" } },
-        { str: "", style: { color: "Red", fontSize: "14px", fontWeight: "bold" } },
-        { str: "\n------------", style: { color: "White", fontSize: "14px" } }
-        
-    ]);
 }
-
-
 function onPlayerJoin(playerId) {
     const slot0 = api.getMoonstoneChestItemSlot(playerId, 0);
     UpdatePlayerGui(playerId);
@@ -93,7 +115,7 @@ function tick() {
             data.lastCPS = data.clicks.length;
         }
 
-        UpdatePlayerGui(playerId);
+        UpdateAllPlayerGui();
     }
 }
 
