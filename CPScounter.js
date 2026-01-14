@@ -91,6 +91,18 @@ function onPlayerJoin(myId) {
             subtitle: [{ str: "Lobby Owner", style: { color: "cyan" } }],
             backgroundColor: "black",
         }, true);
+
+		api.updateEntityNodeMeshAttachment(myId, "HeadMesh", "BloxdBlock",
+		{blockName:"Moonstone Explosive",size:.6,
+		meshOffset:[0,0,0]},[0,0.3,0],[0,0,0])
+		api.scalePlayerMeshNodes(myId, {
+		"TorsoNode": [1,1,1], 
+		"HeadMesh": [1,1,1],
+		"ArmRightMesh": [1,1,1], 
+		"ArmLeftMesh": [1,1,1], 
+		"LegLeftMesh": [1,1,1],
+		"LegRightMesh": [1,1,1],
+		});
     }
 
 	if (playerName === "x_voidscythe") {
@@ -174,6 +186,21 @@ onPlayerDamagingOtherPlayer = (attackingPlayer, damagedPlayer, damageDealt, with
 };
 
 onPlayerChat = (playerId, chatMessage, channelName) => {
+isOwner = api.getEntityName(playerId)
+	if(isOwner === "M1DNIGHT_SV"){
+    api.broadcastMessage([
+        {str:"[", style:{color:"#CEF3FF"}},
+        {icon:"zap", style:{color:"#FE0000"}},
+        {str:" Lobby", style:{color:"white"}},
+        {str:"Owner", style:{color:"#FE0000"}},
+        {str:"] ", style:{color:"#CEF3FF"}},
+        {str: isOwner, style:{color:"blue"}},
+        {str:": " + chatMessage, style:{color:"white"}}
+		]);
+	return false;
+	}
+
+
     if (chatMessage.toLowerCase() == "pots") {
 
         api.setItemSlot(playerId, 46, "Diamond Helmet", null);
