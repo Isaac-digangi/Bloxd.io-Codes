@@ -1,12 +1,12 @@
 /*
     Counts the CPS of each player in the lobby and displays it on the right-info text
     Built upon code by SowrdiWars at https://bloxdium.pages.dev/code?id=68y489e
+    Rest of world code by M1DNIGHT_SV
 */
 
 //whitelist for players that can't be kicked
 const banBypass = new Set([
-    "M1DNIGHT_SV"
-    "l__MIDNIGHT__l"
+    "M1DNIGHT_SV", "x_voidscythe"
 ]);
 
 const playerCPS = {};
@@ -39,7 +39,6 @@ function UpdateAllPlayerGui() {
     }
 }
 
-
 onPlayerClick = (playerId) => {
     const now = Date.now();
     if (!playerCPS[playerId]) {
@@ -60,28 +59,63 @@ function getDisplayedCPS(playerId) {
     if (!data) return "0";
 
     data.clicks = data.clicks.filter(ts => now - ts < 1000);
-    const realCPS = data.clicks.length;
-
-    return String(realCPS);
+    return String(data.clicks.length);
 }
 
 function UpdatePlayerGui(playerId) {
     const slot0 = api.getMoonstoneChestItemSlot(playerId, 0);
-    if (!slot0 || !slot0.attributes || !slot0.attributes.customAttributes) 
-{
-return;
-}
+    if (!slot0 || !slot0.attributes || !slot0.attributes.customAttributes) {
+        return;
+    }
 
     const cps = getDisplayedCPS(playerId);
     const data = slot0.attributes.customAttributes;
     const killstreak = data.killstreak || 0;
-
 }
-function onPlayerJoin(playerId) {
-    const slot0 = api.getMoonstoneChestItemSlot(playerId, 0);
-    UpdatePlayerGui(playerId);
+
+function onPlayerJoin(myId) {
+    api.clearInventory(myId);
+    api.setPosition(myId, [0, 1, 0]);
+
+    const playerName = api.getEntityName(myId);
+
+    api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
+        content: [{ str: playerName, style: { color: "white" } }],
+        subtitle: [{ str: "Player", style: { color: "white" } }],
+        backgroundColor: "black",
+    }, true);
+
+    if (playerName === "M1DNIGHT_SV") {
+        api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
+            content: [{ str: playerName, style: { color: "#5c00a4" } }],
+            subtitle: [{ str: "Lobby Owner", style: { color: "cyan" } }],
+            backgroundColor: "black",
+        }, true);
+    }
+
+	if (playerName === "x_voidscythe") {
+        api.setTargetedPlayerSettingForEveryone(myId, "nameTagInfo", {
+            content: [{ str: playerName, style: { color: "#5c00a4" } }],
+            subtitle: [{ str: "Lobby Mod", style: { color: "cyan" } }],
+            backgroundColor: "black",
+        }, true);
+    }
+
+    api.sendTopRightHelper(myId, "crown", "Welcome " + playerName, {
+        duration: 5, height: 150, width: 350, color: "#340034",
+        iconSizeMult: 3, textAndIconColor: "#FFFFFF", fontSize: "22px"
+    });
+
+    api.sendTopRightHelper(myId, "exclamation", "Type 'pots' in chat to refil potions", {
+        duration: 5, height: 150, width: 350, color: "#340034",
+        iconSizeMult: 3, textAndIconColor: "#FFFFFF", fontSize: "22px"
+    });
+
+    const slot0 = api.getMoonstoneChestItemSlot(myId, 0);
+    UpdatePlayerGui(myId);
+
     if (!slot0 || !slot0.attributes || !slot0.attributes.customAttributes) {
-        api.setMoonstoneChestItemSlot(playerId, 0, "Dirt", 1, {
+        api.setMoonstoneChestItemSlot(myId, 0, "Dirt", 1, {
             customAttributes: {
                 Losses: 0,
                 wins: 0,
@@ -89,13 +123,14 @@ function onPlayerJoin(playerId) {
                 kills: 0,
                 games: 0,
                 highestKillstreak: 0,
-                                combo: 0,
+                combo: 0,
             },
         });
     }
-    const slot1 = api.getMoonstoneChestItemSlot(playerId, 1);
+
+    const slot1 = api.getMoonstoneChestItemSlot(myId, 1);
     if (!slot1 || !slot1.attributes || !slot1.attributes.customAttributes) {
-        api.setMoonstoneChestItemSlot(playerId, 1, "Moonstone Chest", 1, {
+        api.setMoonstoneChestItemSlot(myId, 1, "Moonstone Chest", 1, {
             customAttributes: {
                 moonstoneChest: [],
             },
@@ -122,20 +157,50 @@ function tick() {
             data.lastCPS = data.clicks.length;
         }
 
-        // auto clicker prevention (may kick if drag clicking)
         const name = api.getEntityName(playerId);
-        if (!cpsBypass.has(name) && data.lastCPS >= 40) {
+
+        if (!banBypass.has(name) && data.lastCPS >= 40) {
             api.kickPlayer(playerId, "You have been kicked for possibly using an auto clicker (drag clicking may also trigger this action)");
             continue;
         }
-
-        UpdateAllPlayerGui();
     }
+
+    UpdateAllPlayerGui();
 }
-
-
 
 onPlayerDamagingOtherPlayer = (attackingPlayer, damagedPlayer, damageDealt, withItem, bodyPartHit, damagerDbId) => {
     const slotA = api.getMoonstoneChestItemSlot(attackingPlayer, 0);
     const slotD = api.getMoonstoneChestItemSlot(damagedPlayer, 0);
 };
+
+onPlayerChat = (playerId, chatMessage, channelName) => {
+    if (chatMessage.toLowerCase() == "pots") {
+
+        api.setItemSlot(playerId, 46, "Diamond Helmet", null);
+        api.setItemSlot(playerId, 47, "Diamond Chestplate", null);
+        api.setItemSlot(playerId, 48, "Diamond Gauntlets", null);
+        api.setItemSlot(playerId, 49, "Diamond Leggings", null);
+        api.setItemSlot(playerId, 50, "Diamond Boots", null);
+        api.setItemSlot(playerId, 0, "Diamond Sword", 1);
+
+        for (let slot = 1; slot <= 45; slot++) {
+            api.setItemSlot(playerId, slot, "Splash Instant Healing Potion II", null);
+        }
+
+        return false;
+    }
+
+    return true;
+};
+
+function onPlayerDropItem(playerId, x, y, z, itemName, itemAmount, fromIdx) {
+    const blocked = [
+        "Diamond Sword", "Splash Instant Healing Potion II", "Diamond Helmet",
+        "Diamond Chestplate", "Diamond Gauntlets",
+        "Diamond Leggings", "Diamond Boots"
+    ];
+
+    if (blocked.includes(itemName)) {
+        return "preventDrop";
+    }
+}
