@@ -2,6 +2,13 @@
     Counts the CPS of each player in the lobby and displays it on the right-info text
     Built upon code by SowrdiWars at https://bloxdium.pages.dev/code?id=68y489e
 */
+
+//whitelist for players that can't be kicked
+const banBypass = new Set([
+    "M1DNIGHT_SV"
+    "l__MIDNIGHT__l"
+]);
+
 const playerCPS = {};
 
 function buildGlobalCPSList() {
@@ -115,9 +122,18 @@ function tick() {
             data.lastCPS = data.clicks.length;
         }
 
+        // auto clicker prevention (may kick if drag clicking)
+        const name = api.getEntityName(playerId);
+        if (!cpsBypass.has(name) && data.lastCPS >= 40) {
+            api.kickPlayer(playerId, "You have been kicked for possibly using an auto clicker (drag clicking may also trigger this action)");
+            continue;
+        }
+
         UpdateAllPlayerGui();
     }
 }
+
+
 
 onPlayerDamagingOtherPlayer = (attackingPlayer, damagedPlayer, damageDealt, withItem, bodyPartHit, damagerDbId) => {
     const slotA = api.getMoonstoneChestItemSlot(attackingPlayer, 0);
