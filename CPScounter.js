@@ -92,17 +92,40 @@ function onPlayerJoin(myId) {
             backgroundColor: "black",
         }, true);
 
-		api.updateEntityNodeMeshAttachment(myId, "HeadMesh", "BloxdBlock",
-		{blockName:"Moonstone Explosive",size:.6,
-		meshOffset:[0,0,0]},[0,0.3,0],[0,0,0])
-		api.scalePlayerMeshNodes(myId, {
-		"TorsoNode": [1,1,1], 
-		"HeadMesh": [1,1,1],
-		"ArmRightMesh": [1,1,1], 
-		"ArmLeftMesh": [1,1,1], 
-		"LegLeftMesh": [1,1,1],
-		"LegRightMesh": [1,1,1],
-		});
+		api.updateEntityNodeMeshAttachment(myId, "LegLeftMesh", "ParticleEmitter", {
+		    emitRate: 20,
+		    meshOffset: 20,
+		    width: 1,
+		    height: 1,
+		    depth: 2,
+		    //dir: [1, 0, 0],
+		    texture: "glint",
+		    minLifeTime: 0.7,
+		    maxLifeTime: 2,
+		    minEmitPower: 1,
+		    maxEmitPower: 1,
+		    minSize: 0.5,
+		    maxSize: 0.6,
+		    manualEmitCount: 40,
+		    gravity: [0, -1, 0],
+		    colorGradients: [
+		      {
+		        timeFraction: 0,
+		        minColor: [240, 0, 0],
+		        maxColor: [0, 0, 0],
+		      },
+		    ],
+		    velocityGradients: [
+		      {
+		        timeFraction: 0,
+		        factor: 1,
+		        factor2: 1,
+		      },
+		    ],
+		    blendMode: 1,
+		    },
+		  [0, 0, 0]
+		);
     }
 
 	if (playerName === "x_voidscythe") {
