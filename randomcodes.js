@@ -158,3 +158,16 @@ onAttemptKillPlayer = (p) => {
 	api.setMoonstoneChestItemSlot(p, 0, "Black Paintball", 1, {})
 	api.kickPlayer(p, "You died in hardcore mode")
 }
+
+//golden apple code
+
+api.giveItem(myId, "Apple", 1, {customDisplayName: "Golden Apple", customAttributes:{"enchantmentTier":"Tier 5"}})
+
+onPlayerFinishChargingItem = (playerId, used, itemName, duration) => {
+	slot = api.getSelectedInventorySlotI(playerId)
+	itm = api.getItemSlot(playerId, slot)
+	if(itemName === "Apple" && itm.attributes.customDisplayName === "Golden Apple"){
+		api.applyEffect(playerId, "Health Regen", 20000, { inbuiltLevel: 2 });
+		api.setShieldAmount(playerId, 40);
+	}
+};
