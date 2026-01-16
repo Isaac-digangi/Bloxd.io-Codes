@@ -352,25 +352,3 @@ function particle(x, y, z) {
         blendMode: 1,
     })
 }
-
-
-
-/*
-
-onPlayerFinishChargingItem = (playerId, used, itemName, duration) => {
-    if (!used) return; // item wasn't actually consumed
-
-    // Get the item in the player's hand (slot 0)
-    const held = api.getItemSlot(playerId, 0);
-
-    if (
-        held &&
-        held.itemName === "Apple" &&
-        held.customDisplayName === "Golden Apple"
-    ) {
-        api.applyEffect(playerId, "Health Regen", 20000, { inbuiltLevel: 2 });
-        api.setShieldAmount(playerId, 40);
-    }
-};
-
-*/
