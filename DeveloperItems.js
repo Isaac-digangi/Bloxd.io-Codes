@@ -24,7 +24,8 @@ const stackableItems = [
   	"Obby Absorb Block","Obby Absorb Death Block","Obby Death Block",
   	"Generator Spawn Block (Ore)","Generator Spawn Block (Diamond)",
   	"Generator Spawn Block (Moonstone)","Generator Spawn Block (Gray)",
-  	"Finish Block","Goal Block (Red)","Goal Block (Blue)","Melting Ice|Breaking"
+  	"Finish Block","Goal Block (Red)","Goal Block (Blue)","Melting Ice|Breaking",
+	"Ultra Lucky Block"
 ];
 
 const unstackableItems = [
