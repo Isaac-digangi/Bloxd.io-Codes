@@ -1,3 +1,7 @@
+// i need to add spawn protection next because rn it doesnt have any lol
+
+api.giveItem(myId, "Artisan Axe", 1, {customDisplayName: "Mace", customAttributes:{enchantmentTier: "Tier 4"}});
+
 function onPlayerDamagingMob(attackerId, targetId, damageAmount, itemName) {
     try {
         const heldItem = api.getHeldItem(attackerId);
