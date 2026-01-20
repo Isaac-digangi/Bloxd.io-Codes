@@ -1,3 +1,5 @@
+api.giveItem(myId, "Artisan Axe", 1, {customDisplayName: "Mace", customAttributes:{enchantmentTier: "Tier 4"}});
+
 const fallStartY = {};
 
 function tick() {
