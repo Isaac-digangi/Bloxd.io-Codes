@@ -1,3 +1,13 @@
+/*
+FINALLY WORKS WITH DAMAGE SCALING
+
+code by M1DNIGHT_SV
+built upon original code by BOLT_STRIKE_HT3
+Scales damage will fall height
+does more damage will less armor protection (ex 17 with diamond but about 35 with iron)
+
+*/
+
 api.giveItem(myId, "Artisan Axe", 1, {customDisplayName: "Mace", customAttributes:{enchantmentTier: "Tier 4"}});
 
 const fallStartY = {};
@@ -47,11 +57,9 @@ function onPlayerDamagingMob(attackerId, targetId, damageAmount, itemName) {
         const fallDistance = Math.max(0, startY - currentY);
 
         if (fallDistance < 1) return;
-        //makes the weapon more op lol
         const damage = Math.ceil(fallDistance * 2);
 
         api.applyHealthChange(targetId, -damage, attackerId);
-		api.log("damage dealt: " + damage);
 
         api.applyEffect(targetId, "Slowness", 3000, {
             icon: "Slowness",
@@ -135,7 +143,6 @@ onPlayerDamagingOtherPlayer = (attackingPlayer, damagedPlayer, damageDealt, with
         const damage = Math.ceil(fallDistance * 2);
 
         api.applyHealthChange(damagedPlayer, -damage, attackingPlayer);
-        api.log("PVP slam damage dealt: " + damage);
 
         api.applyEffect(damagedPlayer, "Slowness", 3000, {
             icon: "Slowness",
