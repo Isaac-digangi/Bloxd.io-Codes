@@ -1,12 +1,12 @@
-Codes for Bloxd.io Worlds Lobbies | Compiled, edited, and tested by M1DNIGHT_SV
+Codes for Bloxd.io Lobbies
 
 Credits:
-- BluePandaBloxd    (achievements)
-- Bloxd Builder     (day/night cycle)
-- Nexo              (Dev items)
-- S0MPENDER         (Dev items)
-- BOLT_STRIKE_HT3   (Old mace code)
-- Mister_Casino     (Old mace code)
-- x_Drxth           (Totem of Undying)
-- Itz_Pika_YT       (Totem of Undying)
-- M1DNIGHT_SV       (MaceV3 + others | editor and tester)
+- BluePandaBloxd
+- Bloxd Builder
+- Nexo
+- S0MPENDER
+- BOLT_STRIKE_HT3
+- Mister_Casino
+- x_Drxth
+- Itz_Pika_YT
+- M1DNIGHT_SV
