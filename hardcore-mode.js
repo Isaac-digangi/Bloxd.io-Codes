@@ -46,7 +46,9 @@ onPlayerJoin = (p) => {
 
 onAttemptKillPlayer = (p) => {
     api.setMoonstoneChestItemSlot(p, 0, "Blue Paintball", 1, {});
-    api.setClientOption(p, respawnButtonText, ["Spectate", general:spectate]);
+    api.setClientOption(p, "general:respawn", false);
+    api.setClientOption(p, "general:spectate", true);
+    api.setGamemode(p, "Spectator");
 };
 
 onMobKilledPlayer = (atkMob, killed, dmg, item) => {
