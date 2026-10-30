@@ -12,3 +12,5 @@ Credits:
 - M1DNIGHT_SV
 
 cps.pvp - no longer receives updates, but working cps counter pvp lobby
+
+(w arthur for unbanning me btw)
