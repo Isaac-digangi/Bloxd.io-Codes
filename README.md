@@ -10,3 +10,5 @@ Credits:
 - x_Drxth
 - Itz_Pika_YT
 - M1DNIGHT_SV
+
+cps.pvp - no longer receives updates, but working cps counter pvp lobby
